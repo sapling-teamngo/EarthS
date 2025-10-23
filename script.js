@@ -67,11 +67,16 @@ const translations = {
         slopeHint: "يجب أن يكون بين 0 و 25%",
         cropType: "نوع المحصول",
         selectCrop: "اختر نوع المحصول",
-        olive: "الزيتون (مرحلة التأسيس - Kc 0.65)",
+        olive: "الزيتون (Kc 0.65)",
         pomegranate: "الرمان (Kc 0.75)",
         almond: "اللوز (Kc 0.70)", 
-        fodder: "القطف / الشجيرات الرعوية (Kc 0.55)",
-        juniper: "العرعر (شتلات حرجية - Kc 0.45)", 
+        fig: "التين (Kc 0.60)",
+        grape: "العنب (Kc 0.80)",
+        atriplex: "القطف (Kc 0.55)",
+        juniper: "العرعر (Kc 0.45)",
+        thyme: "الزعتر البري (Kc 0.40)",
+        sage: "الميرمية (Kc 0.50)",
+        barley: "الشعير (Kc 0.85)",
         custom: "قيمة مخصصة",
         customKc: "قيمة Kc مخصصة",
         customKcHint: "معامل المحصول - اختياري (افتراضي 1 إذا لم تدخل قيمة)",
@@ -111,8 +116,8 @@ const translations = {
         whySpacing: "لماذا هذه المسافات المحددة؟",
         spacingReason: "تم حساب المسافات بناءً على الأبحاث الميدانية التي أظهرت أن التداخل بنسبة 5-10% بين الهلالات يمنع فقدان مياه الأمطار ويوفر تغطية مثالية للأرض.",
         howCalculated: "كيف تم حساب المسافات؟",
-        calculationMethod: "المسافة بين الصفوف (L) = 0.60 × القطر - هذا يضمن تداخلاً رأسيًا يمنع تسرب المياه بين الصفوف.",
-        calculationMethod2: "المسافة الأفقية (Y) = 1.05 × القطر - هذا يضمن تداخلاً أفقيًا بنسبة 5% لمنع وجود فجوات.",
+        calculationMethod: "المسافة بين الصفوف (L) = 0.75 × القطر - هذا يضمن تداخلاً رأسيًا يمنع تسرب المياه بين الصفوف.",
+        calculationMethod2: "المسافة الأفقية (Y) = 1.10 × القطر - هذا يضمن تداخلاً أفقيًا بنسبة 10% لمنع وجود فجوات.",
         sourcesTitle: "المصادر العلمية",
         visualResults: "النتائج المرئية",
         
@@ -203,11 +208,16 @@ const translations = {
         slopeHint: "Should be between 0 and 25%",
         cropType: "Crop Type",
         selectCrop: "Select Crop Type",
-        olive: "Olive (Establishment - Kc 0.65)",
+        olive: "Olive (Kc 0.65)",
         pomegranate: "Pomegranate (Kc 0.75)",
         almond: "Almond (Kc 0.70)",
-        fodder: "Atriplex / Fodder Shrubs (Kc 0.55)",
-        juniper: "Juniper (Forest Seedlings - Kc 0.45)",
+        fig: "Fig (Kc 0.60)",
+        grape: "Grape (Kc 0.80)",
+        atriplex: "Atriplex (Kc 0.55)",
+        juniper: "Juniper (Kc 0.45)",
+        thyme: "Wild Thyme (Kc 0.40)",
+        sage: "Sage (Kc 0.50)",
+        barley: "Barley (Kc 0.85)",
         custom: "Custom Value",
         customKc: "Custom Kc Value",
         customKcHint: "Crop coefficient - optional (default 1 if no value entered)",
@@ -247,8 +257,8 @@ const translations = {
         whySpacing: "Why These Specific Distances?",
         spacingReason: "Distances were calculated based on field research that showed 5-10% overlap between crescents prevents rainwater loss and provides optimal land coverage.",
         howCalculated: "How Were Distances Calculated?",
-        calculationMethod: "Row spacing (L) = 0.60 × Diameter - This ensures vertical overlap that prevents water leakage between rows.",
-        calculationMethod2: "Horizontal spacing (Y) = 1.05 × Diameter - This ensures 5% horizontal overlap to prevent gaps.",
+        calculationMethod: "Row spacing (L) = 0.75 × Diameter - This ensures vertical overlap that prevents water leakage between rows.",
+        calculationMethod2: "Horizontal spacing (Y) = 1.10 × Diameter - This ensures 10% horizontal overlap to prevent gaps.",
         sourcesTitle: "Scientific Sources",
         visualResults: "Visual Results",
         
@@ -346,10 +356,20 @@ function updateCropOptions() {
             option.textContent = translations[currentLang].pomegranate;
         } else if (value === '0.70') {
             option.textContent = translations[currentLang].almond;
+        } else if (value === '0.60') {
+            option.textContent = translations[currentLang].fig;
+        } else if (value === '0.80') {
+            option.textContent = translations[currentLang].grape;
         } else if (value === '0.55') {
-            option.textContent = translations[currentLang].fodder;
+            option.textContent = translations[currentLang].atriplex;
         } else if (value === '0.45') {
             option.textContent = translations[currentLang].juniper;
+        } else if (value === '0.40') {
+            option.textContent = translations[currentLang].thyme;
+        } else if (value === '0.50') {
+            option.textContent = translations[currentLang].sage;
+        } else if (value === '0.85') {
+            option.textContent = translations[currentLang].barley;
         } else if (value === 'custom') {
             option.textContent = translations[currentLang].custom;
         }
@@ -736,18 +756,6 @@ function initCalculator() {
     const customKcInput = document.getElementById('custom-kc');
     
     if (calculatorForm) {
-        // تحديث قيم المحاصيل بالقيم الصحيحة
-        if (cropSelect) {
-            // تحديث القيم بناءً على Kc الجديدة
-            const options = cropSelect.querySelectorAll('option[value]');
-            options.forEach(option => {
-                if (option.value === '0.55') option.value = '0.65';
-                if (option.value === '0.60') option.value = '0.75';
-                if (option.value === '0.65') option.value = '0.70';
-                // 0.50 و 0.45 يبقون كما هما
-            });
-        }
-        
         // معالجة اختيار المحصول المخصص
         if (cropSelect) {
             cropSelect.addEventListener('change', function() {
