@@ -121,7 +121,18 @@ const translations = {
         eqE5: "E-5",
         eqE6: "E-6",
         eqE7: "E-7", 
-        eqE10: "E-10"
+        eqE10: "E-10",
+
+        // التوثيق
+        documentation: "التوثيق",
+        docsDesc: "جميع المعادلات والمصادر والتفاصيل التقنية المستخدمة في تصميم النظام",
+        tableOfContents: "جدول المحتويات",
+        introduction: "المقدمة",
+        equations: "المعادلات الأساسية",
+        sources: "المصادر",
+        variables: "تعريفات المتغيرات",
+        methodology: "منهجية العمل",
+        calculations: "شرح الحسابات"
     },
     en: {
         // Navigation
@@ -244,7 +255,18 @@ const translations = {
         eqE5: "E-5",
         eqE6: "E-6",
         eqE7: "E-7",
-        eqE10: "E-10"
+        eqE10: "E-10",
+
+        // Documentation
+        documentation: "Documentation",
+        docsDesc: "All equations, sources and technical details used in system design",
+        tableOfContents: "Table of Contents",
+        introduction: "Introduction",
+        equations: "Basic Equations",
+        sources: "Sources",
+        variables: "Variable Definitions",
+        methodology: "Methodology",
+        calculations: "Calculation Explanation"
     }
 };
 
@@ -260,6 +282,8 @@ function toggleLanguage() {
 
 // وظيفة تحديث النصوص
 function updateLanguage() {
+    console.log('Updating language to:', currentLang);
+    
     // تحديث جميع العناصر التي تحتوي على data-i18n
     document.querySelectorAll('[data-i18n]').forEach(element => {
         const key = element.getAttribute('data-i18n');
@@ -282,6 +306,12 @@ function updateLanguage() {
     
     // تحديث خيارات المحاصيل
     updateCropOptions();
+    
+    // تحديث خيارات وحدات القياس
+    updateUnitOptions();
+    
+    // تحديث خيارات نوع التربة
+    updateSoilOptions();
     
     // تحديث الرسوم البيانية إذا كانت موجودة
     updateChartsLanguage();
@@ -322,6 +352,52 @@ function updateCropOptions() {
     
     // إعادة تعيين القيمة المحددة
     cropSelect.value = currentValue;
+}
+
+// تحديث خيارات وحدات القياس
+function updateUnitOptions() {
+    const unitSelect = document.getElementById('area-unit');
+    if (!unitSelect) return;
+    
+    const currentValue = unitSelect.value;
+    
+    const options = unitSelect.querySelectorAll('option');
+    options.forEach(option => {
+        const value = option.value;
+        if (value === 'hectare') {
+            option.textContent = translations[currentLang].hectare;
+        } else if (value === 'acre') {
+            option.textContent = translations[currentLang].acre;
+        } else if (value === 'dunam') {
+            option.textContent = translations[currentLang].dunam;
+        } else if (value === 'square-meter') {
+            option.textContent = translations[currentLang].squareMeter;
+        }
+    });
+    
+    unitSelect.value = currentValue;
+}
+
+// تحديث خيارات نوع التربة
+function updateSoilOptions() {
+    const soilSelect = document.getElementById('soil-type');
+    if (!soilSelect) return;
+    
+    const currentValue = soilSelect.value;
+    
+    const options = soilSelect.querySelectorAll('option');
+    options.forEach(option => {
+        const value = option.value;
+        if (value === 'sandy') {
+            option.textContent = translations[currentLang].sandy;
+        } else if (value === 'loamy') {
+            option.textContent = translations[currentLang].loamy;
+        } else if (value === 'clay') {
+            option.textContent = translations[currentLang].clay;
+        }
+    });
+    
+    soilSelect.value = currentValue;
 }
 
 // تحديث الرسوم البيانية
@@ -470,17 +546,21 @@ function displayResults(results) {
     document.getElementById('result-total-pits').textContent = `${results.totalPits}`;
     
     // تحديث ملخص النتائج
-    document.getElementById('summary-diameter').textContent = `${results.diameter.toFixed(2)} ${currentLang === 'ar' ? 'م' : 'm'}`;
-    document.getElementById('summary-height').textContent = `${results.height.toFixed(1)} ${currentLang === 'ar' ? 'سم' : 'cm'}`;
-    document.getElementById('summary-row-spacing').textContent = `${results.rowSpacing.toFixed(2)} ${currentLang === 'ar' ? 'م' : 'm'}`;
-    document.getElementById('summary-pit-spacing').textContent = `${results.pitSpacing.toFixed(2)} ${currentLang === 'ar' ? 'م' : 'm'}`;
-    document.getElementById('summary-pits-hectare').textContent = `${results.pitsPerHectare}`;
-    document.getElementById('summary-total-pits').textContent = `${results.totalPits}`;
+    if (document.getElementById('summary-diameter')) {
+        document.getElementById('summary-diameter').textContent = `${results.diameter.toFixed(2)} ${currentLang === 'ar' ? 'م' : 'm'}`;
+        document.getElementById('summary-height').textContent = `${results.height.toFixed(1)} ${currentLang === 'ar' ? 'سم' : 'cm'}`;
+        document.getElementById('summary-row-spacing').textContent = `${results.rowSpacing.toFixed(2)} ${currentLang === 'ar' ? 'م' : 'm'}`;
+        document.getElementById('summary-pit-spacing').textContent = `${results.pitSpacing.toFixed(2)} ${currentLang === 'ar' ? 'م' : 'm'}`;
+        document.getElementById('summary-pits-hectare').textContent = `${results.pitsPerHectare}`;
+        document.getElementById('summary-total-pits').textContent = `${results.totalPits}`;
+    }
     
     // تحديث الرسم التوضيحي
-    document.getElementById('illustration-diameter').textContent = `D = ${results.diameter.toFixed(2)}m`;
-    document.getElementById('illustration-height').textContent = `H = ${results.height.toFixed(1)}cm`;
-    document.getElementById('illustration-spacing').textContent = `L = ${results.rowSpacing.toFixed(2)}m`;
+    if (document.getElementById('illustration-diameter')) {
+        document.getElementById('illustration-diameter').textContent = `D = ${results.diameter.toFixed(2)}m`;
+        document.getElementById('illustration-height').textContent = `H = ${results.height.toFixed(1)}cm`;
+        document.getElementById('illustration-spacing').textContent = `L = ${results.rowSpacing.toFixed(2)}m`;
+    }
     
     // إنشاء الرسوم البيانية
     createCharts(results);
@@ -501,7 +581,10 @@ function displayResults(results) {
 
 // إنشاء الرسوم البيانية
 function createCharts(results) {
-    const ctx = document.getElementById('design-chart').getContext('2d');
+    const ctx = document.getElementById('design-chart');
+    if (!ctx) return;
+    
+    const ctx2d = ctx.getContext('2d');
     
     // تدمير الرسم البياني السابق إذا كان موجوداً
     if (window.designChart) {
@@ -512,7 +595,7 @@ function createCharts(results) {
         ['القطر (م)', 'الارتفاع (سم)', 'مساحة الزراعة (م²)', 'مساحة التجميع (م²)'] :
         ['Diameter (m)', 'Height (cm)', 'Cultivation Area (m²)', 'Catchment Area (m²)'];
     
-    window.designChart = new Chart(ctx, {
+    window.designChart = new Chart(ctx2d, {
         type: 'bar',
         data: {
             labels: labels,
@@ -649,13 +732,15 @@ function initCalculator() {
     
     if (calculatorForm) {
         // معالجة اختيار المحصول المخصص
-        cropSelect.addEventListener('change', function() {
-            if (this.value === 'custom') {
-                customKcGroup.style.display = 'block';
-            } else {
-                customKcGroup.style.display = 'none';
-            }
-        });
+        if (cropSelect) {
+            cropSelect.addEventListener('change', function() {
+                if (this.value === 'custom') {
+                    if (customKcGroup) customKcGroup.style.display = 'block';
+                } else {
+                    if (customKcGroup) customKcGroup.style.display = 'none';
+                }
+            });
+        }
         
         // معالجة إرسال النموذج
         calculatorForm.addEventListener('submit', function(e) {
@@ -664,7 +749,7 @@ function initCalculator() {
             // جمع البيانات من النموذج
             const rainfall = parseFloat(document.getElementById('rainfall').value);
             const slope = parseFloat(document.getElementById('slope').value);
-            const cropValue = cropSelect.value;
+            const cropValue = cropSelect ? cropSelect.value : '';
             const area = parseFloat(document.getElementById('area').value) || 1;
             const areaUnit = document.getElementById('area-unit').value;
             
@@ -672,7 +757,7 @@ function initCalculator() {
             let kc = 1; // القيمة الافتراضية
             
             if (cropValue === 'custom') {
-                kc = parseFloat(customKcInput.value) || 1;
+                kc = parseFloat(customKcInput ? customKcInput.value : 1) || 1;
             } else if (cropValue) {
                 kc = parseFloat(cropValue);
             }
@@ -707,17 +792,25 @@ function initCalculator() {
         });
         
         // زر حفظ النتائج
-        document.getElementById('save-results').addEventListener('click', saveResults);
+        const saveBtn = document.getElementById('save-results');
+        if (saveBtn) {
+            saveBtn.addEventListener('click', saveResults);
+        }
         
         // زر طباعة النتائج
-        document.getElementById('print-results').addEventListener('click', function() {
-            window.print();
-        });
+        const printBtn = document.getElementById('print-results');
+        if (printBtn) {
+            printBtn.addEventListener('click', function() {
+                window.print();
+            });
+        }
     }
 }
 
 // تهيئة التطبيق عند تحميل الصفحة
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM loaded, initializing...');
+    
     // تهيئة القائمة المتنقلة
     initNavigation();
     
@@ -728,6 +821,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const languageToggle = document.getElementById('language-toggle');
     if (languageToggle) {
         languageToggle.addEventListener('click', toggleLanguage);
+        console.log('Language toggle button found and event listener added');
+    } else {
+        console.log('Language toggle button not found');
     }
     
     // تحديث اللغة والاتجاه الأولي
@@ -737,10 +833,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // إضافة تأثيرات scroll للتنقل
     window.addEventListener('scroll', function() {
         const navbar = document.querySelector('.navbar');
-        if (window.scrollY > 100) {
+        if (navbar && window.scrollY > 100) {
             navbar.style.background = 'rgba(255, 255, 255, 0.95)';
             navbar.style.backdropFilter = 'blur(10px)';
-        } else {
+        } else if (navbar) {
             navbar.style.background = 'var(--surface-color)';
             navbar.style.backdropFilter = 'none';
         }
