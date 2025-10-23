@@ -505,6 +505,8 @@ const unitConversions = {
 
 // حساب تصميم حصاد مياه الأمطار
 function calculateRainwaterHarvesting(P, S, Kc, area, areaUnit) {
+    console.log('Input values:', { P, S, Kc, area, areaUnit });
+    
     // E-1: حساب القطر بناءً على معدل الأمطار (معادلة منطقية)
     let D = 8.5 + (1200 - P) / 300; // أكثر منطقية: قطر أكبر في المناطق الجافة
     D = Math.max(2, Math.min(12, D));
@@ -525,9 +527,18 @@ function calculateRainwaterHarvesting(P, S, Kc, area, areaUnit) {
     // حساب المسافة بين الهلالات
     const betweenBunds = Y - (D / 2);
     
-    // E-6: حساب نسبة التجميع إلى الزراعة (معادلة محسنة)
+    // E-6: حساب نسبة التجميع إلى الزراعة (معادلة محسنة مع تأثير Kc واضح)
+    // Kc له تأثير مباشر على C:A - كلما زاد Kc زادت الحاجة للمياه وزادت مساحة التجميع
     let C_A = 0.35 * Kc * Math.pow(P / 100, -0.35) * Math.exp(0.018 * S);
     C_A = Math.max(1.0, Math.min(4.0, C_A));
+    
+    console.log('C:A calculation:', {
+        base: 0.35,
+        kcEffect: Kc,
+        rainfallEffect: Math.pow(P / 100, -0.35),
+        slopeEffect: Math.exp(0.018 * S),
+        finalC_A: C_A
+    });
     
     // E-7: حساب مساحة منطقة التجميع
     const A_catch = C_A * A_cult;
@@ -558,6 +569,8 @@ function calculateRainwaterHarvesting(P, S, Kc, area, areaUnit) {
 
 // عرض النتائج
 function displayResults(results) {
+    console.log('Displaying results:', results);
+    
     // تحديث القيم النصية
     document.getElementById('result-diameter').textContent = `${results.diameter.toFixed(2)} ${currentLang === 'ar' ? 'م' : 'm'}`;
     document.getElementById('result-height').textContent = `${results.height.toFixed(1)} ${currentLang === 'ar' ? 'سم' : 'cm'}`;
@@ -787,6 +800,8 @@ function initCalculator() {
                 kc = parseFloat(cropValue);
             }
             
+            console.log('Form values:', { rainfall, slope, cropValue, kc, area, areaUnit });
+            
             // التحقق من صحة البيانات
             if (rainfall < 50 || rainfall > 1200) {
                 alert(currentLang === 'ar' ? 
@@ -827,6 +842,25 @@ function initCalculator() {
         if (printBtn) {
             printBtn.addEventListener('click', function() {
                 window.print();
+            });
+        }
+        
+        // إضافة event listener لحقل Kc المخصص لتحديث الحسابات مباشرة
+        if (customKcInput) {
+            customKcInput.addEventListener('input', function() {
+                // إذا كان النموذج يحتوي على بيانات صالحة، قم بإعادة الحساب
+                const rainfall = parseFloat(document.getElementById('rainfall').value);
+                const slope = parseFloat(document.getElementById('slope').value);
+                const area = parseFloat(document.getElementById('area').value) || 1;
+                const areaUnit = document.getElementById('area-unit').value;
+                
+                if (rainfall && slope && this.value) {
+                    const kc = parseFloat(this.value) || 1;
+                    if (kc >= 0.1 && kc <= 1.5) {
+                        const results = calculateRainwaterHarvesting(rainfall, slope, kc, area, areaUnit);
+                        displayResults(results);
+                    }
+                }
             });
         }
     }
