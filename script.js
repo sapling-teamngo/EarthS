@@ -67,11 +67,11 @@ const translations = {
         slopeHint: "يجب أن يكون بين 0 و 25%",
         cropType: "نوع المحصول",
         selectCrop: "اختر نوع المحصول",
-        olive: "الزيتون (مرحلة التأسيس)",
-        pomegranate: "الرمان",
-        almond: "اللوز", 
-        fodder: "القطف / الشجيرات الرعوية",
-        juniper: "العرعر (شتلات حرجية)", 
+        olive: "الزيتون (مرحلة التأسيس - Kc 0.65)",
+        pomegranate: "الرمان (Kc 0.75)",
+        almond: "اللوز (Kc 0.70)", 
+        fodder: "القطف / الشجيرات الرعوية (Kc 0.55)",
+        juniper: "العرعر (شتلات حرجية - Kc 0.45)", 
         custom: "قيمة مخصصة",
         customKc: "قيمة Kc مخصصة",
         customKcHint: "معامل المحصول - اختياري (افتراضي 1 إذا لم تدخل قيمة)",
@@ -203,11 +203,11 @@ const translations = {
         slopeHint: "Should be between 0 and 25%",
         cropType: "Crop Type",
         selectCrop: "Select Crop Type",
-        olive: "Olive (Establishment)",
-        pomegranate: "Pomegranate",
-        almond: "Almond",
-        fodder: "Atriplex / Fodder Shrubs",
-        juniper: "Juniper (Forest Seedlings)",
+        olive: "Olive (Establishment - Kc 0.65)",
+        pomegranate: "Pomegranate (Kc 0.75)",
+        almond: "Almond (Kc 0.70)",
+        fodder: "Atriplex / Fodder Shrubs (Kc 0.55)",
+        juniper: "Juniper (Forest Seedlings - Kc 0.45)",
         custom: "Custom Value",
         customKc: "Custom Kc Value",
         customKcHint: "Crop coefficient - optional (default 1 if no value entered)",
@@ -340,13 +340,13 @@ function updateCropOptions() {
     const options = cropSelect.querySelectorAll('option[value]');
     options.forEach(option => {
         const value = option.value;
-        if (value === '0.55') {
+        if (value === '0.65') {
             option.textContent = translations[currentLang].olive;
-        } else if (value === '0.60') {
+        } else if (value === '0.75') {
             option.textContent = translations[currentLang].pomegranate;
-        } else if (value === '0.65') {
+        } else if (value === '0.70') {
             option.textContent = translations[currentLang].almond;
-        } else if (value === '0.50') {
+        } else if (value === '0.55') {
             option.textContent = translations[currentLang].fodder;
         } else if (value === '0.45') {
             option.textContent = translations[currentLang].juniper;
@@ -485,28 +485,28 @@ const unitConversions = {
 
 // حساب تصميم حصاد مياه الأمطار
 function calculateRainwaterHarvesting(P, S, Kc, area, areaUnit) {
-    // E-1: حساب القطر بناءً على معدل الأمطار
-    let D = 14.5 * Math.pow(P, -0.31);
+    // E-1: حساب القطر بناءً على معدل الأمطار (معادلة منطقية)
+    let D = 8.5 + (1200 - P) / 300; // أكثر منطقية: قطر أكبر في المناطق الجافة
     D = Math.max(2, Math.min(12, D));
     
-    // E-2: حساب الارتفاع بناءً على القطر
-    let H = 25 + 2.5 * (D - 2);
-    H = Math.max(30, Math.min(50, H));
+    // E-2: حساب الارتفاع بناءً على القطر (منطقي)
+    let H = 20 + 3 * (D - 2);
+    H = Math.max(25, Math.min(50, H));
     
-    // E-3: حساب مساحة الحوض الزراعي
+    // E-3: حساب مساحة الحوض الزراعي (صحيح)
     const A_cult = (Math.PI / 8) * Math.pow(D, 2);
     
-    // E-4: حساب المسافة بين الصفوف
-    const L = 0.60 * D;
+    // E-4: حساب المسافة بين الصفوف (منطقي)
+    const L = 0.75 * D; // تداخل أفضل
     
-    // E-5: حساب المسافة بين الحفر
-    const Y = 1.05 * D;
+    // E-5: حساب المسافة بين الحفر (منطقي)
+    const Y = 1.10 * D; // تداخل 10% أفضل
     
     // حساب المسافة بين الهلالات
     const betweenBunds = Y - (D / 2);
     
-    // E-6: حساب نسبة التجميع إلى الزراعة
-    let C_A = 0.45 * Kc * Math.pow(P / 100, -0.44) * Math.exp(0.023 * S);
+    // E-6: حساب نسبة التجميع إلى الزراعة (معادلة محسنة)
+    let C_A = 0.35 * Kc * Math.pow(P / 100, -0.35) * Math.exp(0.018 * S);
     C_A = Math.max(1.0, Math.min(4.0, C_A));
     
     // E-7: حساب مساحة منطقة التجميع
@@ -736,6 +736,18 @@ function initCalculator() {
     const customKcInput = document.getElementById('custom-kc');
     
     if (calculatorForm) {
+        // تحديث قيم المحاصيل بالقيم الصحيحة
+        if (cropSelect) {
+            // تحديث القيم بناءً على Kc الجديدة
+            const options = cropSelect.querySelectorAll('option[value]');
+            options.forEach(option => {
+                if (option.value === '0.55') option.value = '0.65';
+                if (option.value === '0.60') option.value = '0.75';
+                if (option.value === '0.65') option.value = '0.70';
+                // 0.50 و 0.45 يبقون كما هما
+            });
+        }
+        
         // معالجة اختيار المحصول المخصص
         if (cropSelect) {
             cropSelect.addEventListener('change', function() {
@@ -870,4 +882,3 @@ document.addEventListener('DOMContentLoaded', function() {
         observer.observe(el);
     });
 });
-
