@@ -1,6 +1,9 @@
 // نظام الترجمة ثنائي اللغة
 const translations = {
     ar: {
+        // العناوين
+        siteTitle: "احسب ابتسامة أرضك",
+        
         // التنقل
         home: "الرئيسية",
         calculator: "الآلة الحاسبة", 
@@ -90,18 +93,18 @@ const translations = {
         saveResults: "حفظ النتائج", 
         printResults: "طباعة النتائج",
         basicDimensions: "الأبعاد الأساسية",
-        diameter: "قطر الهلال (D)",
-        height: "ارتفاع السد (H)", 
+        diameter: "قطر الهلال",
+        height: "ارتفاع السد", 
         cultivatedArea: "مساحة الحوض الزراعي",
-        spacingAreas: "المسافات والتباعد",
-        rowSpacing: "المسافة بين الصفوف (L)",
-        pitSpacing: "المسافة بين الحفر (Y)", 
+        spacingAreas: "المسافات",
+        rowSpacing: "بين الصفوف",
+        pitSpacing: "بين الهلالات", 
         betweenBunds: "المسافة بين الهلالات",
         catchmentArea: "مساحة منطقة التجميع",
         efficiency: "الكفاءة والتكثيف",
         caRatio: "نسبة التجميع إلى الزراعة (C:A)",
-        pitsPerHectare: "عدد الحفر في الهكتار", 
-        totalPits: "إجمالي عدد الحفر",
+        pitsPerHectare: "عدد الهلالات/هكتار", 
+        totalPits: "الإجمالي",
         designIllustration: "الرسم التوضيحي للتصميم",
         cultivationArea: "منطقة الزراعة",
         spacingExplanation: "تفسير المسافات والتباعد",
@@ -124,7 +127,6 @@ const translations = {
         eqE10: "E-10",
 
         // التوثيق
-        documentation: "التوثيق",
         docsDesc: "جميع المعادلات والمصادر والتفاصيل التقنية المستخدمة في تصميم النظام",
         tableOfContents: "جدول المحتويات",
         introduction: "المقدمة",
@@ -135,6 +137,9 @@ const translations = {
         calculations: "شرح الحسابات"
     },
     en: {
+        // Titles
+        siteTitle: "Calculate Your Land's Smile",
+        
         // Navigation
         home: "Home",
         calculator: "Calculator",
@@ -224,18 +229,18 @@ const translations = {
         saveResults: "Save Results",
         printResults: "Print Results",
         basicDimensions: "Basic Dimensions",
-        diameter: "Half-moon Diameter (D)",
-        height: "Bund Height (H)",
+        diameter: "Half-moon Diameter",
+        height: "Bund Height", 
         cultivatedArea: "Cultivation Area",
-        spacingAreas: "Spacing and Distances",
-        rowSpacing: "Row Spacing (L)",
-        pitSpacing: "Pit Spacing (Y)",
+        spacingAreas: "Spacing",
+        rowSpacing: "Between Rows",
+        pitSpacing: "Between Crescents", 
         betweenBunds: "Distance Between Bunds",
         catchmentArea: "Catchment Area",
         efficiency: "Efficiency and Density",
         caRatio: "Catchment to Cultivation Ratio (C:A)",
-        pitsPerHectare: "Pits per Hectare",
-        totalPits: "Total Pits",
+        pitsPerHectare: "Crescents/Hectare", 
+        totalPits: "Total",
         designIllustration: "Design Illustration",
         cultivationArea: "Cultivation Area",
         spacingExplanation: "Spacing and Distance Explanation",
@@ -258,7 +263,6 @@ const translations = {
         eqE10: "E-10",
 
         // Documentation
-        documentation: "Documentation",
         docsDesc: "All equations, sources and technical details used in system design",
         tableOfContents: "Table of Contents",
         introduction: "Introduction",
@@ -328,7 +332,8 @@ function updateCropOptions() {
     // تحديث النص الافتراضي
     const defaultOption = cropSelect.querySelector('option[value=""]');
     if (defaultOption) {
-        defaultOption.textContent = `-- ${translations[currentLang].selectCrop} --`;
+        const selectCropText = translations[currentLang].selectCrop;
+        defaultOption.innerHTML = `-- ${selectCropText} --`;
     }
     
     // تحديث خيارات المحاصيل
@@ -865,3 +870,4 @@ document.addEventListener('DOMContentLoaded', function() {
         observer.observe(el);
     });
 });
+
