@@ -3,75 +3,208 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نظام حصاد مياه الأمطار - الصفحة الرئيسية</title>
+    <title>Earth Smiles - نظام حصاد مياه الأمطار</title>
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <header>
-        <div class="container">
-            <h1>نظام حصاد مياه الأمطار</h1>
-            <p>أداة متكاملة لتصميم أنظمة حصاد مياه الأمطار في المناطق الجافة وشبه الجافة</p>
-        </div>
-    </header>
-
-    <nav>
-        <div class="container">
-            <ul>
-                <li><a href="index.html" class="active">الرئيسية</a></li>
-                <li><a href="calculator.html">الآلة الحاسبة</a></li>
-                <li><a href="docs.html">التوثيق</a></li>
+    <!-- شريط التنقل العلوي -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-leaf"></i>
+                <span class="logo-text">Earth Smiles</span>
+            </div>
+            
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link active" data-i18n="home">الرئيسية</a>
+                </li>
+                <li class="nav-item">
+                    <a href="calculator.html" class="nav-link" data-i18n="calculator">الآلة الحاسبة</a>
+                </li>
+                <li class="nav-item">
+                    <a href="docs.html" class="nav-link" data-i18n="documentation">التوثيق</a>
+                </li>
             </ul>
+            
+            <div class="nav-actions">
+                <button id="language-toggle" class="lang-btn">
+                    <i class="fas fa-language"></i>
+                    <span id="lang-text">English</span>
+                </button>
+                <div class="hamburger">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </div>
         </div>
     </nav>
 
-    <main class="container">
-        <section class="hero">
+    <!-- قسم الهيرو -->
+    <header class="hero">
+        <div class="hero-container">
             <div class="hero-content">
-                <h2>تصميم فعال لأنظمة حصاد مياه الأمطار</h2>
-                <p>استخدم أداتنا المتقدمة لتصميم أنظمة حصاد مياه الأمطار بناءً على معادلات علمية مدروسة ومنشورة في الأبحاث المحكمة.</p>
-                <a href="calculator.html" class="btn primary">ابدأ التصميم الآن</a>
+                <h1 class="hero-title" data-i18n="heroTitle">تصميم فعال لأنظمة حصاد مياه الأمطار</h1>
+                <p class="hero-description" data-i18n="heroDesc">نظام متكامل يعتمد على معادلات علمية دقيقة لتصميم أنظمة حصاد مياه الأمطار في المناطق الجافة وشبه الجافة</p>
+                <div class="hero-actions">
+                    <a href="calculator.html" class="btn btn-primary" data-i18n="getStarted">ابدأ التصميم</a>
+                    <a href="#features" class="btn btn-secondary" data-i18n="learnMore">تعرف أكثر</a>
+                </div>
             </div>
-            
-        </section>
+            <div class="hero-visual">
+                <div class="water-animation">
+                    <div class="raindrop"></div>
+                    <div class="raindrop"></div>
+                    <div class="raindrop"></div>
+                    <div class="terrain">
+                        <div class="half-moon-bund"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
 
-        <section class="features">
-            <h2>مميزات النظام</h2>
+    <!-- قسم المميزات -->
+    <section id="features" class="features">
+        <div class="container">
+            <h2 class="section-title" data-i18n="featuresTitle">مميزات النظام</h2>
             <div class="features-grid">
                 <div class="feature-card">
-                    <div class="feature-icon">📊</div>
-                    <h3>معادلات علمية</h3>
-                    <p>جميع المعادلات مبنية على أبحاث محكمة ومنشورة في مصادر موثوقة</p>
+                    <div class="feature-icon">
+                        <i class="fas fa-calculator"></i>
+                    </div>
+                    <h3 data-i18n="feature1Title">معادلات علمية دقيقة</h3>
+                    <p data-i18n="feature1Desc">جميع الحسابات مبنية على أبحاث محكمة ومنشورة في مصادر موثوقة مثل FAO وICARDA</p>
                 </div>
+                
                 <div class="feature-card">
-                    <div class="feature-icon">🌍</div>
-                    <h3>مناسب للأردن</h3>
-                    <p>مصمم خصيصاً لظروف المناطق الجافة وشبه الجافة في الأردن</p>
+                    <div class="feature-icon">
+                        <i class="fas fa-globe-asia"></i>
+                    </div>
+                    <h3 data-i18n="feature2Title">مناسب للأردن والمنطقة</h3>
+                    <p data-i18n="feature2Desc">مصمم خصيصاً لظروف المناطق الجافة وشبه الجافة في الأردن والشرق الأوسط</p>
                 </div>
+                
                 <div class="feature-card">
-                    <div class="feature-icon">💧</div>
-                    <h3>تصميم دقيق</h3>
-                    <p>يأخذ في الاعتبار معدل الأمطار، الميل، ونوع المحصول</p>
+                    <div class="feature-icon">
+                        <i class="fas fa-ruler-combined"></i>
+                    </div>
+                    <h3 data-i18n="feature3Title">وحدات قياس متعددة</h3>
+                    <p data-i18n="feature3Desc">يدعم الهكتار والفدان والدونم والمتر المربع لتلبية احتياجات جميع المستخدمين</p>
                 </div>
+                
                 <div class="feature-card">
-                    <div class="feature-icon">📱</div>
-                    <h3>سهل الاستخدام</h3>
-                    <p>واجهة بسيطة وبديهية تناسب جميع المستخدمين</p>
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 data-i18n="feature4Title">رسوم بيانية وتوضيحية</h3>
+                    <p data-i18n="feature4Desc">عرض النتائج برسوم بيانية تفاعلية ورسوم توضيحية للتصميم النهائي</p>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section class="cta">
-            <h2>جاهز لبدء التصميم؟</h2>
-            <p>استخدم الآلة الحاسبة لتصميم نظام حصاد مياه الأمطار الخاص بك</p>
-            <a href="calculator.html" class="btn primary">ابدأ الآن</a>
-        </section>
-    </main>
-
-    <footer>
+    <!-- قسم كيفية العمل -->
+    <section class="how-it-works">
         <div class="container">
-            <p>© 2025 نظام حصاد مياه الأمطار. جميع الحقوق محفوظة.</p>
+            <h2 class="section-title" data-i18n="howItWorksTitle">كيف يعمل النظام</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3 data-i18n="step1Title">أدخل البيانات الأساسية</h3>
+                    <p data-i18n="step1Desc">أدخل معدل الأمطار، ميل الأرض، ونوع المحصول</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3 data-i18n="step2Title">اختر وحدة القياس</h3>
+                    <p data-i18n="step2Desc">اختر وحدة القياس المناسبة (هكتار، فدان، دونم، متر مربع)</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3 data-i18n="step3Title">احصل على التصميم الأمثل</h3>
+                    <p data-i18n="step3Desc">استلم التصميم الكامل مع الرسوم البيانية والتفاصيل</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- قسم الإحصائيات -->
+    <section class="stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat">
+                    <div class="stat-number">10+</div>
+                    <div class="stat-label" data-i18n="stat1">معادلة علمية</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">46</div>
+                    <div class="stat-label" data-i18n="stat2">موقع بحثي</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">67</div>
+                    <div class="stat-label" data-i18n="stat3">نظام تجميع صغير</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label" data-i18n="stat4">مفتوح المصدر</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- قسم الحث على الإجراء -->
+    <section class="cta">
+        <div class="container">
+            <div class="cta-content">
+                <h2 class="cta-title" data-i18n="ctaTitle">جاهز لبدء التصميم؟</h2>
+                <p class="cta-description" data-i18n="ctaDesc">استخدم أداتنا المتقدمة لتصميم نظام حصاد مياه الأمطار الخاص بك</p>
+                <a href="calculator.html" class="btn btn-primary btn-large" data-i18n="startDesign">ابدأ التصميم الآن</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- الفوتر -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <i class="fas fa-leaf"></i>
+                        <span>Earth Smiles</span>
+                    </div>
+                    <p class="footer-description" data-i18n="footerDesc">نظام متكامل لتصميم أنظمة حصاد مياه الأمطار</p>
+                </div>
+                
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4 data-i18n="links">روابط سريعة</h4>
+                        <ul>
+                            <li><a href="index.html" data-i18n="home">الرئيسية</a></li>
+                            <li><a href="calculator.html" data-i18n="calculator">الآلة الحاسبة</a></li>
+                            <li><a href="docs.html" data-i18n="documentation">التوثيق</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-column">
+                        <h4 data-i18n="resources">مصادر</h4>
+                        <ul>
+                            <li><a href="#" data-i18n="faq">الأسئلة الشائعة</a></li>
+                            <li><a href="#" data-i18n="tutorials">الدروس التعليمية</a></li>
+                            <li><a href="#" data-i18n="research">الأبحاث</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 Earth Smiles. <span data-i18n="designedBy">صمم من قبل عمر ياسين</span></p>
+            </div>
         </div>
     </footer>
+
+    <script src="script.js"></script>
 </body>
 </html>
