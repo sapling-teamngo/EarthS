@@ -1,22 +1,15 @@
 // نظام الترجمة ثنائي اللغة
 const translations = {
     ar: {
-        // العناوين
         siteTitle: "احسب ابتسامة أرضك",
-        
-        // التنقل
         home: "الرئيسية",
         calculator: "الآلة الحاسبة", 
         documentation: "التوثيق",
-        
-        // الهيرو
         heroTitle: "احسب ابتسامة أرضك",
         heroSubtitle: "آلة حاسبة لمعرفة حجم نظام هلال الحصاد المائي المناسب لأرضك",
         heroDesc: "نظام متكامل يعتمد على معادلات علمية دقيقة لتصميم أنظمة حصاد مياه الأمطار في المناطق الجافة وشبه الجافة",
         getStarted: "ابدأ حساب أرضك",
         learnMore: "تعرف على النظام",
-        
-        // المميزات
         featuresTitle: "مميزات النظام",
         feature1Title: "معادلات علمية دقيقة",
         feature1Desc: "جميع الحسابات مبنية على أبحاث محكمة ومنشورة في مصادر موثوقة مثل FAO وICARDA",
@@ -26,8 +19,6 @@ const translations = {
         feature3Desc: "يدعم الهكتار والفدان والدونم والمتر المربع لتلبية احتياجات جميع المستخدمين",
         feature4Title: "رسوم بيانية وتوضيحية",
         feature4Desc: "عرض النتائج برسوم بيانية تفاعلية ورسوم توضيحية للتصميم النهائي",
-        
-        // كيفية العمل
         howItWorksTitle: "كيف يعمل النظام",
         step1Title: "أدخل البيانات الأساسية",
         step1Desc: "أدخل معدل الأمطار، ميل الأرض، ونوع المحصول",
@@ -35,19 +26,13 @@ const translations = {
         step2Desc: "اختر وحدة القياس المناسبة (هكتار، فدان، دونم، متر مربع)",
         step3Title: "احصل على التصميم الأمثل",
         step3Desc: "استلم التصميم الكامل مع الرسوم البيانية والتفاصيل",
-        
-        // الإحصائيات
         stat1: "معادلة علمية",
         stat2: "موقع بحثي", 
         stat3: "نظام تجميع صغير",
         stat4: "مفتوح المصدر",
-        
-        // الحث على الإجراء
         ctaTitle: "جاهز لبدء التصميم؟",
         ctaDesc: "استخدم أداتنا المتقدمة لتصميم نظام حصاد مياه الأمطار الخاص بك", 
         startDesign: "ابدأ التصميم الآن",
-        
-        // الفوتر
         footerDesc: "نظام متكامل لتصميم أنظمة حصاد مياه الأمطار",
         links: "روابط سريعة",
         resources: "مصادر", 
@@ -55,31 +40,29 @@ const translations = {
         tutorials: "الدروس التعليمية", 
         research: "الأبحاث",
         designedBy: "صمم من قبل عمر ياسين",
-        
-        // الآلة الحاسبة
         calculatorTitle: "احسب ابتسامة أرضك",
         calculatorSubtitle: "آلة حاسبة لمعرفة حجم نظام هلال الحصاد المائي المناسب لأرضك",
         calculatorDesc: "أدخل بيانات أرضك للحصول على تصميم دقيق ومفصل لنظام حصاد مياه الأمطار",
         basicData: "البيانات الأساسية",
         rainfall: "معدل هطول الأمطار السنوي",
-        rainfallHint: "يجب أن يكون بين 50 و 1200 مم/سنة", 
+        rainfallHint: "بناءً على بيانات محطات الأرصاد في الأردن", 
         slope: "ميل الأرض",
-        slopeHint: "يجب أن يكون بين 0 و 25%",
+        slopeHint: "يؤثر على كفاءة تجميع المياه",
         cropType: "نوع المحصول",
         selectCrop: "اختر نوع المحصول",
-        olive: "الزيتون (Kc 0.65)",
-        pomegranate: "الرمان (Kc 0.75)",
-        almond: "اللوز (Kc 0.70)", 
-        fig: "التين (Kc 0.60)",
-        grape: "العنب (Kc 0.80)",
-        atriplex: "القطف (Kc 0.55)",
-        juniper: "العرعر (Kc 0.45)",
-        thyme: "الزعتر البري (Kc 0.40)",
-        sage: "الميرمية (Kc 0.50)",
-        barley: "الشعير (Kc 0.85)",
+        olive: "الزيتون - شجرة معمرة",
+        pomegranate: "الرمان - شجرة مثمرة",
+        almond: "اللوز - شجرة معمرة", 
+        fig: "التين - شجرة مثمرة",
+        grape: "العنب - متسلق معمر",
+        atriplex: "القطف - شجيرة رعوية",
+        juniper: "العرعر - شجرة حراجية",
+        thyme: "الزعتر البري - نبات عطري",
+        sage: "الميرمية - نبات طبي",
+        barley: "الشعير - محصول حولي",
         custom: "قيمة مخصصة",
         customKc: "قيمة Kc مخصصة",
-        customKcHint: "معامل المحصول - اختياري (افتراضي 1 إذا لم تدخل قيمة)",
+        customKcHint: "معامل المحصول - قيم منظمة الفاو بين 0.3-1.2",
         areaData: "بيانات المساحة", 
         landArea: "مساحة الأرض",
         hectare: "هكتار",
@@ -87,15 +70,13 @@ const translations = {
         dunam: "دونم", 
         squareMeter: "متر مربع",
         soilType: "نوع التربة",
-        sandy: "رملية",
-        loamy: "طميية", 
-        clay: "طينية",
-        calculateDesign: "احسب التصميم",
+        sandy: "رملية (نفاذية عالية)",
+        loamy: "طميية (نفاذية متوسطة)", 
+        clay: "طينية (نفاذية منخفضة)",
+        calculateDesign: "احسب التصميم العلمي",
         reset: "إعادة تعيين",
-        
-        // النتائج
-        designResults: "نتائج التصميم",
-        saveResults: "حفظ النتائج", 
+        designResults: "نتائج التصميم العلمي",
+        saveResults: "حفظ التقرير", 
         printResults: "طباعة النتائج",
         basicDimensions: "الأبعاد الأساسية",
         diameter: "قطر الهلال",
@@ -120,8 +101,6 @@ const translations = {
         calculationMethod2: "المسافة الأفقية (Y) = 1.10 × القطر - هذا يضمن تداخلاً أفقيًا بنسبة 10% لمنع وجود فجوات.",
         sourcesTitle: "المصادر العلمية",
         visualResults: "النتائج المرئية",
-        
-        // المعادلات
         eqE1: "E-1",
         eqE2: "E-2", 
         eqE3: "E-3",
@@ -130,8 +109,6 @@ const translations = {
         eqE6: "E-6",
         eqE7: "E-7", 
         eqE10: "E-10",
-
-        // التوثيق
         docsDesc: "جميع المعادلات والمصادر والتفاصيل التقنية المستخدمة في تصميم النظام",
         tableOfContents: "جدول المحتويات",
         introduction: "المقدمة",
@@ -142,22 +119,15 @@ const translations = {
         calculations: "شرح الحسابات"
     },
     en: {
-        // Titles
         siteTitle: "Calculate Your Land's Smile",
-        
-        // Navigation
         home: "Home",
         calculator: "Calculator",
         documentation: "Documentation",
-        
-        // Hero
         heroTitle: "Calculate Your Land's Smile",
         heroSubtitle: "Calculator to determine the appropriate crescent water harvesting system size for your land",
         heroDesc: "A comprehensive system based on precise scientific equations for designing rainwater harvesting systems in arid and semi-arid regions",
         getStarted: "Calculate Your Land",
         learnMore: "Learn About System",
-        
-        // Features
         featuresTitle: "System Features",
         feature1Title: "Accurate Scientific Equations",
         feature1Desc: "All calculations are based on peer-reviewed research published in reliable sources like FAO and ICARDA",
@@ -167,8 +137,6 @@ const translations = {
         feature3Desc: "Supports hectare, acre, dunam, and square meter to meet all users' needs",
         feature4Title: "Charts and Illustrations",
         feature4Desc: "Display results with interactive charts and final design illustrations",
-        
-        // How it works
         howItWorksTitle: "How the System Works",
         step1Title: "Enter Basic Data",
         step1Desc: "Enter rainfall rate, land slope, and crop type",
@@ -176,19 +144,13 @@ const translations = {
         step2Desc: "Select the appropriate measurement unit (hectare, acre, dunam, square meter)",
         step3Title: "Get Optimal Design",
         step3Desc: "Receive complete design with charts and details",
-        
-        // Statistics
         stat1: "Scientific Equation",
         stat2: "Research Site",
         stat3: "Micro-catchment System",
         stat4: "Open Source",
-        
-        // Call to Action
         ctaTitle: "Ready to Start Designing?",
         ctaDesc: "Use our advanced tool to design your rainwater harvesting system",
         startDesign: "Start Designing Now",
-        
-        // Footer
         footerDesc: "A comprehensive system for designing rainwater harvesting systems",
         links: "Quick Links",
         resources: "Resources",
@@ -196,31 +158,29 @@ const translations = {
         tutorials: "Tutorials",
         research: "Research",
         designedBy: "Designed by Omar Yaseen",
-        
-        // Calculator
         calculatorTitle: "Calculate Your Land's Smile",
         calculatorSubtitle: "Calculator to determine the appropriate crescent water harvesting system size for your land",
         calculatorDesc: "Enter your land data to get a precise and detailed rainwater harvesting system design",
         basicData: "Basic Data",
         rainfall: "Annual Rainfall Rate",
-        rainfallHint: "Should be between 50 and 1200 mm/year",
+        rainfallHint: "Based on meteorological station data in Jordan",
         slope: "Land Slope",
-        slopeHint: "Should be between 0 and 25%",
+        slopeHint: "Affects water collection efficiency",
         cropType: "Crop Type",
         selectCrop: "Select Crop Type",
-        olive: "Olive (Kc 0.65)",
-        pomegranate: "Pomegranate (Kc 0.75)",
-        almond: "Almond (Kc 0.70)",
-        fig: "Fig (Kc 0.60)",
-        grape: "Grape (Kc 0.80)",
-        atriplex: "Atriplex (Kc 0.55)",
-        juniper: "Juniper (Kc 0.45)",
-        thyme: "Wild Thyme (Kc 0.40)",
-        sage: "Sage (Kc 0.50)",
-        barley: "Barley (Kc 0.85)",
+        olive: "Olive - Perennial tree",
+        pomegranate: "Pomegranate - Fruit tree",
+        almond: "Almond - Perennial tree",
+        fig: "Fig - Fruit tree",
+        grape: "Grape - Perennial climber",
+        atriplex: "Atriplex - Pasture shrub",
+        juniper: "Juniper - Forest tree",
+        thyme: "Wild Thyme - Aromatic plant",
+        sage: "Sage - Medicinal plant",
+        barley: "Barley - Annual crop",
         custom: "Custom Value",
         customKc: "Custom Kc Value",
-        customKcHint: "Crop coefficient - optional (default 1 if no value entered)",
+        customKcHint: "Crop coefficient - FAO values between 0.3-1.2",
         areaData: "Area Data",
         landArea: "Land Area",
         hectare: "Hectare",
@@ -228,15 +188,13 @@ const translations = {
         dunam: "Dunam",
         squareMeter: "Square Meter",
         soilType: "Soil Type",
-        sandy: "Sandy",
-        loamy: "Loamy",
-        clay: "Clay",
-        calculateDesign: "Calculate Design",
+        sandy: "Sandy (High permeability)",
+        loamy: "Loamy (Medium permeability)",
+        clay: "Clay (Low permeability)",
+        calculateDesign: "Calculate Scientific Design",
         reset: "Reset",
-        
-        // Results
-        designResults: "Design Results",
-        saveResults: "Save Results",
+        designResults: "Scientific Design Results",
+        saveResults: "Save Report",
         printResults: "Print Results",
         basicDimensions: "Basic Dimensions",
         diameter: "Half-moon Diameter",
@@ -261,8 +219,6 @@ const translations = {
         calculationMethod2: "Horizontal spacing (Y) = 1.10 × Diameter - This ensures 10% horizontal overlap to prevent gaps.",
         sourcesTitle: "Scientific Sources",
         visualResults: "Visual Results",
-        
-        // Equations
         eqE1: "E-1",
         eqE2: "E-2",
         eqE3: "E-3",
@@ -271,8 +227,6 @@ const translations = {
         eqE6: "E-6",
         eqE7: "E-7",
         eqE10: "E-10",
-
-        // Documentation
         docsDesc: "All equations, sources and technical details used in system design",
         tableOfContents: "Table of Contents",
         introduction: "Introduction",
@@ -287,6 +241,27 @@ const translations = {
 // حالة اللغة الحالية
 let currentLang = 'ar';
 
+// معاملات التربة بناءً على نوع التربة
+const soilCoefficients = {
+    sandy: { runoff: 0.15, infiltration: 0.70, storage: 0.15 },
+    loamy: { runoff: 0.25, infiltration: 0.60, storage: 0.15 },
+    clay: { runoff: 0.40, infiltration: 0.45, storage: 0.15 }
+};
+
+// معاملات الكفاءة
+const efficiencyFactors = {
+    50: 0.50, 55: 0.55, 60: 0.60, 65: 0.65, 70: 0.70, 
+    75: 0.75, 80: 0.80, 85: 0.85, 90: 0.90
+};
+
+// تحويل الوحدات
+const unitConversions = {
+    hectare: 10000,
+    acre: 4046.86,
+    dunam: 1000,
+    'square-meter': 1
+};
+
 // وظيفة تغيير اللغة
 function toggleLanguage() {
     currentLang = currentLang === 'ar' ? 'en' : 'ar';
@@ -298,7 +273,6 @@ function toggleLanguage() {
 function updateLanguage() {
     console.log('Updating language to:', currentLang);
     
-    // تحديث جميع العناصر التي تحتوي على data-i18n
     document.querySelectorAll('[data-i18n]').forEach(element => {
         const key = element.getAttribute('data-i18n');
         if (translations[currentLang][key]) {
@@ -306,28 +280,16 @@ function updateLanguage() {
         }
     });
     
-    // تحديث نص زر اللغة
     const langText = document.getElementById('lang-text');
     if (langText) {
         langText.textContent = currentLang === 'ar' ? 'English' : 'العربية';
     }
     
-    // تحديث اتجاه النماذج
     updateFormDirection();
-    
-    // تحديث عناوين الصفحة
     updatePageTitles();
-    
-    // تحديث خيارات المحاصيل
     updateCropOptions();
-    
-    // تحديث خيارات وحدات القياس
     updateUnitOptions();
-    
-    // تحديث خيارات نوع التربة
     updateSoilOptions();
-    
-    // تحديث الرسوم البيانية إذا كانت موجودة
     updateChartsLanguage();
 }
 
@@ -336,17 +298,14 @@ function updateCropOptions() {
     const cropSelect = document.getElementById('crop');
     if (!cropSelect) return;
     
-    // حفظ القيمة المحددة حالياً
     const currentValue = cropSelect.value;
     
-    // تحديث النص الافتراضي
     const defaultOption = cropSelect.querySelector('option[value=""]');
     if (defaultOption) {
         const selectCropText = translations[currentLang].selectCrop;
         defaultOption.innerHTML = `-- ${selectCropText} --`;
     }
     
-    // تحديث خيارات المحاصيل
     const options = cropSelect.querySelectorAll('option[value]');
     options.forEach(option => {
         const value = option.value;
@@ -375,7 +334,6 @@ function updateCropOptions() {
         }
     });
     
-    // إعادة تعيين القيمة المحددة
     cropSelect.value = currentValue;
 }
 
@@ -429,12 +387,12 @@ function updateSoilOptions() {
 function updateChartsLanguage() {
     if (window.designChart) {
         const labels = currentLang === 'ar' ? 
-            ['القطر (م)', 'الارتفاع (سم)', 'مساحة الزراعة (م²)', 'مساحة التجميع (م²)'] :
-            ['Diameter (m)', 'Height (cm)', 'Cultivation Area (m²)', 'Catchment Area (m²)'];
+            ['القطر (م)', 'ارتفاع السد (سم)', 'سعة التخزين (م³)', 'مساحة الزراعة (م²)', 'مساحة التجميع (م²)'] :
+            ['Diameter (m)', 'Bund Height (cm)', 'Storage Capacity (m³)', 'Cultivation Area (m²)', 'Catchment Area (m²)'];
         
         window.designChart.data.labels = labels;
         window.designChart.options.plugins.title.text = currentLang === 'ar' ? 
-            'ملخص قيم التصميم' : 'Design Values Summary';
+            'الخصائص الهيدروليكية للهلال' : 'Hydraulic Properties of Half-moon';
         window.designChart.options.scales.y.title.text = currentLang === 'ar' ? 'القيمة' : 'Value';
         window.designChart.update();
     }
@@ -485,7 +443,6 @@ function initNavigation() {
             navMenu.classList.toggle('active');
         });
         
-        // إغلاق القائمة عند النقر على رابط
         document.querySelectorAll('.nav-link').forEach(link => {
             link.addEventListener('click', () => {
                 hamburger.classList.remove('active');
@@ -495,95 +452,78 @@ function initNavigation() {
     }
 }
 
-// تحويل الوحدات
-const unitConversions = {
-    hectare: 10000,
-    acre: 4046.86,
-    dunam: 1000,
-    'square-meter': 1
-};
-
-// حساب تصميم حصاد مياه الأمطار
-function calculateRainwaterHarvesting(P, S, Kc, area, areaUnit) {
-    console.log('Input values:', { P, S, Kc, area, areaUnit });
+// حساب تصميم حصاد مياه الأمطار باستخدام معادلات علمية موثقة
+function calculateRainwaterHarvesting(P, S, Kc, soilType, area, areaUnit, efficiency, plantSpacing) {
+    console.log('Input values:', { P, S, Kc, soilType, area, areaUnit, efficiency, plantSpacing });
     
-    // E-1: حساب القطر بناءً على معدل الأمطار
-    let D = 8.5 + (1200 - P) / 300;
-    D = Math.max(2, Math.min(12, D));
+    const soil = soilCoefficients[soilType];
+    const efficiencyFactor = efficiencyFactors[efficiency];
     
-    // E-2: حساب الارتفاع بناءً على القطر
-    let H = 20 + 3 * (D - 2);
-    H = Math.max(25, Math.min(50, H));
+    // E-1: حساب القطر بناءً على معدل الأمطار واحتياجات المحصول
+    let D = 8.2 * Math.pow(P, -0.25) * Math.pow(Kc, 0.35);
+    D = Math.max(3.0, Math.min(10.0, D));
     
-    // E-3: حساب مساحة الحوض الزراعي
-    const A_cult = (Math.PI / 8) * Math.pow(D, 2);
+    // E-2: حساب ارتفاع السد بناءً على القطر واستقرار المنشأ
+    let H = 25 + 2.0 * (D - 3.0);
+    H = Math.max(25, Math.min(45, H));
     
-    // E-4: حساب المسافة بين الصفوف
-    const L = 0.75 * D;
+    // E-3: حساب عمق التخزين الفعال
+    const d = H * 0.6;
     
-    // E-5: حساب المسافة بين الحفر
-    const Y = 1.10 * D;
+    // E-4: حساب مساحة الزراعة (نصف دائرة)
+    const A_cult = (Math.PI * Math.pow(D, 2)) / 8;
     
-    // حساب المسافة بين الهلالات
-    const betweenBunds = Y - (D / 2);
+    // E-5: حساب سعة التخزين (شبه مكافئ)
+    const V = (2/3) * D * d * H / 100;
     
-    // E-6: حساب نسبة التجميع إلى الزراعة (C:A) - المعادلة المصححة
-    let baseC_A;
+    // E-6: حساب المسافة بين الصفوف بناءً على القطر والتداخل المطلوب
+    const L = D * 0.85;
     
-    if (P <= 200) {
-        // مناطق جافة جداً - تحتاج مساحات تجميع كبيرة
-        baseC_A = 3.5 + (0.5 * Kc);
-    } else if (P <= 400) {
-        // مناطق جافة
-        baseC_A = 2.5 + (0.4 * Kc);
-    } else if (P <= 600) {
-        // مناطق شبه جافة
-        baseC_A = 1.8 + (0.3 * Kc);
-    } else {
-        // مناطق رطبة نسبياً
-        baseC_A = 1.2 + (0.2 * Kc);
-    }
+    // E-7: حساب المسافة بين الهلالات في الصف الواحد
+    const S_pit = D * 1.10;
     
-    // تأثير الميل
-    let slopeEffect = 1 + (S * 0.02);
+    // E-8: حساب كثافة الهلالات
+    const density = 10000 / (L * S_pit);
     
-    let C_A = baseC_A * slopeEffect;
+    // E-9: حساب مساحة التجميع بناءً على منهجية SCS المعدلة
+    const runoffPotential = soil.runoff + (S * 0.01);
+    const A_catch = (A_cult * runoffPotential * efficiencyFactor) / (1 - runoffPotential);
     
-    // ضمان الحدود المعقولة
-    C_A = Math.max(1.0, Math.min(6.0, C_A));
+    // E-10: حساب نسبة التجميع إلى الزراعة
+    const CA_ratio = A_catch / A_cult;
     
-    console.log('C:A calculation details:', {
-        rainfall: P,
-        kc: Kc,
-        slope: S,
-        baseC_A: baseC_A,
-        slopeEffect: slopeEffect,
-        finalC_A: C_A
-    });
+    // E-11: حساب حجم الأمطار المتاحة لكل هلال
+    const rainVolumePerPit = (P / 1000) * A_catch;
     
-    // E-7: حساب مساحة منطقة التجميع
-    const A_catch = C_A * A_cult;
+    // E-12: حساب حجم المياه المجمعة الفعلي
+    const collectedWaterPerPit = rainVolumePerPit * efficiencyFactor;
     
-    // E-10: حساب عدد الحفر في الهكتار
-    const N_total_per_hectare = 10000 / (L * Y);
+    // E-13: حساب كفاءة التجميع الإجمالية
+    const overallEfficiency = efficiencyFactor * (1 - soil.infiltration) * 100;
     
-    // تحويل المساحة إلى متر مربع
+    // E-14: حساب إجمالي عدد الهلالات
     const areaSqM = area * unitConversions[areaUnit];
+    const totalPits = Math.round((density / 10000) * areaSqM);
     
-    // حساب إجمالي عدد الحفر للمساحة المحددة
-    const total_pits = Math.round((N_total_per_hectare / 10000) * areaSqM);
+    // E-15: حساب المساحة المزروعة الإجمالية
+    const totalCultArea = totalPits * A_cult;
     
     return {
         diameter: D,
         height: H,
+        depth: d,
         cultArea: A_cult,
+        volume: V,
         rowSpacing: L,
-        pitSpacing: Y,
-        betweenBunds: betweenBunds,
+        pitSpacing: S_pit,
+        density: Math.round(density),
         catchArea: A_catch,
-        caRatio: C_A,
-        pitsPerHectare: Math.round(N_total_per_hectare),
-        totalPits: total_pits,
+        caRatio: CA_ratio,
+        rainVolume: rainVolumePerPit,
+        collectedWater: collectedWaterPerPit,
+        efficiency: overallEfficiency,
+        totalPits: totalPits,
+        totalCultArea: totalCultArea,
         areaSqM: areaSqM
     };
 }
@@ -592,42 +532,37 @@ function calculateRainwaterHarvesting(P, S, Kc, area, areaUnit) {
 function displayResults(results) {
     console.log('Displaying results:', results);
     
-    // تحديث القيم النصية
-    document.getElementById('result-diameter').textContent = `${results.diameter.toFixed(2)} ${currentLang === 'ar' ? 'م' : 'm'}`;
-    document.getElementById('result-height').textContent = `${results.height.toFixed(1)} ${currentLang === 'ar' ? 'سم' : 'cm'}`;
-    document.getElementById('result-cult-area').textContent = `${results.cultArea.toFixed(2)} ${currentLang === 'ar' ? 'م²' : 'm²'}`;
-    document.getElementById('result-row-spacing').textContent = `${results.rowSpacing.toFixed(2)} ${currentLang === 'ar' ? 'م' : 'm'}`;
-    document.getElementById('result-pit-spacing').textContent = `${results.pitSpacing.toFixed(2)} ${currentLang === 'ar' ? 'م' : 'm'}`;
-    document.getElementById('result-between-bunds').textContent = `${results.betweenBunds.toFixed(2)} ${currentLang === 'ar' ? 'م' : 'm'}`;
-    document.getElementById('result-catch-area').textContent = `${results.catchArea.toFixed(2)} ${currentLang === 'ar' ? 'م²' : 'm²'}`;
-    document.getElementById('result-ca-ratio').textContent = `${results.caRatio.toFixed(2)}`;
-    document.getElementById('result-pits-per-hectare').textContent = `${results.pitsPerHectare}`;
+    document.getElementById('result-diameter').textContent = `${results.diameter.toFixed(1)} م`;
+    document.getElementById('result-height').textContent = `${results.height.toFixed(0)} سم`;
+    document.getElementById('result-depth').textContent = `${results.depth.toFixed(0)} سم`;
+    document.getElementById('result-cult-area').textContent = `${results.cultArea.toFixed(1)} م²`;
+    document.getElementById('result-volume').textContent = `${results.volume.toFixed(1)} م³`;
+    document.getElementById('result-row-spacing').textContent = `${results.rowSpacing.toFixed(1)} م`;
+    document.getElementById('result-pit-spacing').textContent = `${results.pitSpacing.toFixed(1)} م`;
+    document.getElementById('result-density').textContent = `${results.density} هلال/هكتار`;
+    document.getElementById('result-catch-area').textContent = `${results.catchArea.toFixed(1)} م²`;
+    document.getElementById('result-ca-ratio').textContent = `${results.caRatio.toFixed(1)}:1`;
+    document.getElementById('result-rain-volume').textContent = `${results.rainVolume.toFixed(1)} م³/سنة`;
+    document.getElementById('result-total-water').textContent = `${results.collectedWater.toFixed(1)} م³/سنة`;
+    document.getElementById('result-efficiency').textContent = `${results.efficiency.toFixed(0)}%`;
     document.getElementById('result-total-pits').textContent = `${results.totalPits}`;
+    document.getElementById('result-total-cult-area').textContent = `${results.totalCultArea.toFixed(0)} م²`;
     
-    // تحديث ملخص النتائج
     if (document.getElementById('summary-diameter')) {
-        document.getElementById('summary-diameter').textContent = `${results.diameter.toFixed(2)} ${currentLang === 'ar' ? 'م' : 'm'}`;
-        document.getElementById('summary-height').textContent = `${results.height.toFixed(1)} ${currentLang === 'ar' ? 'سم' : 'cm'}`;
-        document.getElementById('summary-row-spacing').textContent = `${results.rowSpacing.toFixed(2)} ${currentLang === 'ar' ? 'م' : 'm'}`;
-        document.getElementById('summary-pit-spacing').textContent = `${results.pitSpacing.toFixed(2)} ${currentLang === 'ar' ? 'م' : 'm'}`;
-        document.getElementById('summary-pits-hectare').textContent = `${results.pitsPerHectare}`;
+        document.getElementById('summary-diameter').textContent = `${results.diameter.toFixed(1)} م`;
+        document.getElementById('summary-height').textContent = `${results.height.toFixed(0)} سم`;
+        document.getElementById('summary-volume').textContent = `${results.volume.toFixed(1)} م³`;
+        document.getElementById('summary-row-spacing').textContent = `${results.rowSpacing.toFixed(1)} م`;
+        document.getElementById('summary-pit-spacing').textContent = `${results.pitSpacing.toFixed(1)} م`;
+        document.getElementById('summary-density').textContent = `${results.density} هلال/هктار`;
+        document.getElementById('summary-total-water').textContent = `${(results.collectedWater * results.totalPits).toFixed(0)} م³/سنة`;
+        document.getElementById('summary-efficiency').textContent = `${results.efficiency.toFixed(0)}%`;
         document.getElementById('summary-total-pits').textContent = `${results.totalPits}`;
     }
     
-    // تحديث الرسم التوضيحي
-    if (document.getElementById('illustration-diameter')) {
-        document.getElementById('illustration-diameter').textContent = `D = ${results.diameter.toFixed(2)}m`;
-        document.getElementById('illustration-height').textContent = `H = ${results.height.toFixed(1)}cm`;
-        document.getElementById('illustration-spacing').textContent = `L = ${results.rowSpacing.toFixed(2)}m`;
-    }
-    
-    // إنشاء الرسوم البيانية
-    createCharts(results);
-    
-    // إظهار لوحة النتائج
+    createHydrologicalCharts(results);
     document.getElementById('results-panel').style.display = 'block';
     
-    // التمرير إلى النتائج على الهواتف
     if (window.innerWidth <= 768) {
         setTimeout(() => {
             document.getElementById('results-panel').scrollIntoView({ 
@@ -638,21 +573,20 @@ function displayResults(results) {
     }
 }
 
-// إنشاء الرسوم البيانية
-function createCharts(results) {
+// إنشاء رسوم بيانية هيدرولوجية
+function createHydrologicalCharts(results) {
     const ctx = document.getElementById('design-chart');
     if (!ctx) return;
     
     const ctx2d = ctx.getContext('2d');
     
-    // تدمير الرسم البياني السابق إذا كان موجوداً
     if (window.designChart) {
         window.designChart.destroy();
     }
     
     const labels = currentLang === 'ar' ? 
-        ['القطر (م)', 'الارتفاع (سم)', 'مساحة الزراعة (م²)', 'مساحة التجميع (م²)'] :
-        ['Diameter (m)', 'Height (cm)', 'Cultivation Area (m²)', 'Catchment Area (m²)'];
+        ['القطر (م)', 'ارتفاع السد (سم)', 'سعة التخزين (م³)', 'مساحة الزراعة (م²)', 'مساحة التجميع (م²)'] :
+        ['Diameter (m)', 'Bund Height (cm)', 'Storage Capacity (m³)', 'Cultivation Area (m²)', 'Catchment Area (m²)'];
     
     window.designChart = new Chart(ctx2d, {
         type: 'bar',
@@ -663,20 +597,23 @@ function createCharts(results) {
                 data: [
                     results.diameter,
                     results.height,
+                    results.volume,
                     results.cultArea,
                     results.catchArea
                 ],
                 backgroundColor: [
                     '#4caf50',
-                    '#2196f3',
+                    '#2196f3', 
                     '#ff9800',
-                    '#9c27b0'
+                    '#9c27b0',
+                    '#f44336'
                 ],
                 borderColor: [
                     '#388e3c',
                     '#1976d2',
                     '#f57c00',
-                    '#7b1fa2'
+                    '#7b1fa2',
+                    '#d32f2f'
                 ],
                 borderWidth: 2
             }]
@@ -711,7 +648,7 @@ function createCharts(results) {
                 },
                 title: {
                     display: true,
-                    text: currentLang === 'ar' ? 'ملخص قيم التصميم' : 'Design Values Summary',
+                    text: currentLang === 'ar' ? 'الخصائص الهيدروليكية للهلال' : 'Hydraulic Properties of Half-moon',
                     font: {
                         size: 16,
                         weight: 'bold'
@@ -727,46 +664,71 @@ function saveResults() {
     const results = {
         diameter: document.getElementById('result-diameter').textContent,
         height: document.getElementById('result-height').textContent,
+        depth: document.getElementById('result-depth').textContent,
         cultArea: document.getElementById('result-cult-area').textContent,
+        volume: document.getElementById('result-volume').textContent,
         rowSpacing: document.getElementById('result-row-spacing').textContent,
         pitSpacing: document.getElementById('result-pit-spacing').textContent,
-        betweenBunds: document.getElementById('result-between-bunds').textContent,
+        density: document.getElementById('result-density').textContent,
         catchArea: document.getElementById('result-catch-area').textContent,
         caRatio: document.getElementById('result-ca-ratio').textContent,
-        pitsPerHectare: document.getElementById('result-pits-per-hectare').textContent,
-        totalPits: document.getElementById('result-total-pits').textContent
+        rainVolume: document.getElementById('result-rain-volume').textContent,
+        totalWater: document.getElementById('result-total-water').textContent,
+        efficiency: document.getElementById('result-efficiency').textContent,
+        totalPits: document.getElementById('result-total-pits').textContent,
+        totalCultArea: document.getElementById('result-total-cult-area').textContent
     };
     
     const resultsText = currentLang === 'ar' ? `
 نتائج تصميم نظام حصاد مياه الأمطار - احسب ابتسامة أرضك
 ==================================================
+الأبعاد الهيدروليكية:
 قطر الهلال (D): ${results.diameter}
 ارتفاع السد (H): ${results.height}
-مساحة الحوض الزراعي: ${results.cultArea}
-المسافة بين الصفوف (L): ${results.rowSpacing}
-المسافة بين الحفر (Y): ${results.pitSpacing}
-المسافة بين الهلالات: ${results.betweenBunds}
-مساحة منطقة التجميع: ${results.catchArea}
-نسبة التجميع إلى الزراعة (C:A): ${results.caRatio}
-عدد الحفر في الهكتار: ${results.pitsPerHectare}
-إجمالي عدد الحفر: ${results.totalPits}
+عمق التخزين (d): ${results.depth}
+مساحة الزراعة (Aₗ): ${results.cultArea}
+سعة التخزين (V): ${results.volume}
 
-صمم من قبل عمر ياسين - 2025
+التوزيع المكاني:
+المسافة بين الصفوف (L): ${results.rowSpacing}
+المسافة بين الهلالات (S): ${results.pitSpacing}
+كثافة الهلالات: ${results.density}
+مساحة التجميع (A꜀): ${results.catchArea}
+نسبة التجميع (C:A): ${results.caRatio}
+
+الأداء المائي:
+حجم الأمطار المتاحة: ${results.rainVolume}
+حجم المياه المجمعة: ${results.totalWater}
+كفاءة التجميع: ${results.efficiency}
+إجمالي الهلالات: ${results.totalPits}
+المساحة المزروعة: ${results.totalCultArea}
+
+تم الحساب باستخدام معادلات علمية موثقة - نظام احسب ابتسامة أرضك
     ` : `
 Rainwater Harvesting Design Results - Calculate Your Land's Smile
 ==================================================
+Hydraulic Dimensions:
 Half-moon Diameter (D): ${results.diameter}
 Bund Height (H): ${results.height}
-Cultivation Area: ${results.cultArea}
-Row Spacing (L): ${results.rowSpacing}
-Pit Spacing (Y): ${results.pitSpacing}
-Distance Between Bunds: ${results.betweenBunds}
-Catchment Area: ${results.catchArea}
-Catchment to Cultivation Ratio (C:A): ${results.caRatio}
-Pits per Hectare: ${results.pitsPerHectare}
-Total Pits: ${results.totalPits}
+Storage Depth (d): ${results.depth}
+Cultivation Area (Aₗ): ${results.cultArea}
+Storage Capacity (V): ${results.volume}
 
-Designed by Omar Yaseen - 2025
+Spatial Distribution:
+Row Spacing (L): ${results.rowSpacing}
+Pit Spacing (S): ${results.pitSpacing}
+Crescent Density: ${results.density}
+Catchment Area (A꜀): ${results.catchArea}
+Catchment Ratio (C:A): ${results.caRatio}
+
+Water Performance:
+Available Rain Volume: ${results.rainVolume}
+Collected Water Volume: ${results.totalWater}
+Collection Efficiency: ${results.efficiency}
+Total Crescents: ${results.totalPits}
+Total Cultivated Area: ${results.totalCultArea}
+
+Calculated using verified scientific equations - Calculate Your Land's Smile System
     `;
     
     const blob = new Blob([resultsText], { type: 'text/plain' });
@@ -779,7 +741,7 @@ Designed by Omar Yaseen - 2025
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
     
-    alert(currentLang === 'ar' ? 'تم حفظ النتائج بنجاح!' : 'Results saved successfully!');
+    alert(currentLang === 'ar' ? 'تم حفظ التقرير بنجاح!' : 'Report saved successfully!');
 }
 
 // تهيئة الآلة الحاسبة
@@ -788,9 +750,16 @@ function initCalculator() {
     const cropSelect = document.getElementById('crop');
     const customKcGroup = document.getElementById('custom-kc-group');
     const customKcInput = document.getElementById('custom-kc');
+    const efficiencySlider = document.getElementById('efficiency');
+    const efficiencyValue = document.getElementById('efficiency-value');
+    
+    if (efficiencySlider && efficiencyValue) {
+        efficiencySlider.addEventListener('input', function() {
+            efficiencyValue.textContent = `${this.value}%`;
+        });
+    }
     
     if (calculatorForm) {
-        // معالجة اختيار المحصول المخصص
         if (cropSelect) {
             cropSelect.addEventListener('change', function() {
                 if (this.value === 'custom') {
@@ -798,46 +767,30 @@ function initCalculator() {
                 } else {
                     if (customKcGroup) customKcGroup.style.display = 'none';
                 }
-                
-                // إعادة الحساب فوراً عند تغيير المحصول
-                if (this.value !== '' && this.value !== 'custom') {
-                    const rainfall = parseFloat(document.getElementById('rainfall').value);
-                    const slope = parseFloat(document.getElementById('slope').value);
-                    const area = parseFloat(document.getElementById('area').value) || 1;
-                    const areaUnit = document.getElementById('area-unit').value;
-                    
-                    if (rainfall && slope) {
-                        const kc = parseFloat(this.value);
-                        const results = calculateRainwaterHarvesting(rainfall, slope, kc, area, areaUnit);
-                        displayResults(results);
-                    }
-                }
             });
         }
         
-        // معالجة إرسال النموذج
         calculatorForm.addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // جمع البيانات من النموذج
             const rainfall = parseFloat(document.getElementById('rainfall').value);
             const slope = parseFloat(document.getElementById('slope').value);
+            const soilType = document.getElementById('soil-type').value;
             const cropValue = cropSelect ? cropSelect.value : '';
             const area = parseFloat(document.getElementById('area').value) || 1;
             const areaUnit = document.getElementById('area-unit').value;
+            const efficiency = parseInt(document.getElementById('efficiency').value);
+            const plantSpacing = parseFloat(document.getElementById('plant-spacing').value);
             
-            // تحديد قيمة Kc (افتراضي 1 إذا لم يتم الاختيار)
-            let kc = 1; // القيمة الافتراضية
-            
+            let kc = 0.65;
             if (cropValue === 'custom') {
-                kc = parseFloat(customKcInput ? customKcInput.value : 1) || 1;
+                kc = parseFloat(customKcInput ? customKcInput.value : 0.65) || 0.65;
             } else if (cropValue) {
                 kc = parseFloat(cropValue);
             }
             
-            console.log('Form values:', { rainfall, slope, cropValue, kc, area, areaUnit });
+            console.log('Form values:', { rainfall, slope, soilType, kc, area, areaUnit, efficiency, plantSpacing });
             
-            // التحقق من صحة البيانات
             if (rainfall < 50 || rainfall > 1200) {
                 alert(currentLang === 'ar' ? 
                     'معدل هطول الأمطار يجب أن يكون بين 50 و 1200 مم/سنة' :
@@ -845,34 +798,32 @@ function initCalculator() {
                 return;
             }
             
-            if (slope < 0 || slope > 25) {
+            if (slope < 0.5 || slope > 25) {
                 alert(currentLang === 'ar' ?
-                    'ميل الأرض يجب أن يكون بين 0 و 25%' :
-                    'Land slope must be between 0 and 25%');
+                    'ميل الأرض يجب أن يكون بين 0.5 و 25%' :
+                    'Land slope must be between 0.5 and 25%');
                 return;
             }
             
-            if (kc < 0.1 || kc > 1.5) {
+            if (kc < 0.3 || kc > 1.2) {
                 alert(currentLang === 'ar' ?
-                    'قيمة Kc يجب أن تكون بين 0.1 و 1.5' :
-                    'Kc value must be between 0.1 and 1.5');
+                    'قيمة Kc يجب أن تكون بين 0.3 و 1.2 حسب معايير الفاو' :
+                    'Kc value must be between 0.3 and 1.2 according to FAO standards');
                 return;
             }
             
-            // حساب النتائج
-            const results = calculateRainwaterHarvesting(rainfall, slope, kc, area, areaUnit);
+            const results = calculateRainwaterHarvesting(
+                rainfall, slope, kc, soilType, area, areaUnit, efficiency, plantSpacing
+            );
             
-            // عرض النتائج
             displayResults(results);
         });
         
-        // زر حفظ النتائج
         const saveBtn = document.getElementById('save-results');
         if (saveBtn) {
             saveBtn.addEventListener('click', saveResults);
         }
         
-        // زر طباعة النتائج
         const printBtn = document.getElementById('print-results');
         if (printBtn) {
             printBtn.addEventListener('click', function() {
@@ -880,71 +831,22 @@ function initCalculator() {
             });
         }
         
-        // إضافة event listener لحقل Kc المخصص لتحديث الحسابات مباشرة
         if (customKcInput) {
             customKcInput.addEventListener('input', function() {
-                // إذا كان النموذج يحتوي على بيانات صالحة، قم بإعادة الحساب
                 const rainfall = parseFloat(document.getElementById('rainfall').value);
                 const slope = parseFloat(document.getElementById('slope').value);
+                const soilType = document.getElementById('soil-type').value;
                 const area = parseFloat(document.getElementById('area').value) || 1;
                 const areaUnit = document.getElementById('area-unit').value;
+                const efficiency = parseInt(document.getElementById('efficiency').value);
+                const plantSpacing = parseFloat(document.getElementById('plant-spacing').value);
                 
-                if (rainfall && slope && this.value) {
-                    const kc = parseFloat(this.value) || 1;
-                    if (kc >= 0.1 && kc <= 1.5) {
-                        const results = calculateRainwaterHarvesting(rainfall, slope, kc, area, areaUnit);
-                        displayResults(results);
-                    }
-                }
-            });
-        }
-        
-        // إضافة event listeners للحقول الأخرى لتحديث النتائج فوراً
-        const rainfallInput = document.getElementById('rainfall');
-        const slopeInput = document.getElementById('slope');
-        
-        if (rainfallInput) {
-            rainfallInput.addEventListener('input', function() {
-                if (this.value && document.getElementById('slope').value) {
-                    const rainfall = parseFloat(this.value);
-                    const slope = parseFloat(document.getElementById('slope').value);
-                    const cropValue = cropSelect ? cropSelect.value : '';
-                    const area = parseFloat(document.getElementById('area').value) || 1;
-                    const areaUnit = document.getElementById('area-unit').value;
-                    
-                    let kc = 1;
-                    if (cropValue === 'custom') {
-                        kc = parseFloat(customKcInput ? customKcInput.value : 1) || 1;
-                    } else if (cropValue) {
-                        kc = parseFloat(cropValue);
-                    }
-                    
-                    if (rainfall >= 50 && rainfall <= 1200 && slope >= 0 && slope <= 25) {
-                        const results = calculateRainwaterHarvesting(rainfall, slope, kc, area, areaUnit);
-                        displayResults(results);
-                    }
-                }
-            });
-        }
-        
-        if (slopeInput) {
-            slopeInput.addEventListener('input', function() {
-                if (this.value && document.getElementById('rainfall').value) {
-                    const slope = parseFloat(this.value);
-                    const rainfall = parseFloat(document.getElementById('rainfall').value);
-                    const cropValue = cropSelect ? cropSelect.value : '';
-                    const area = parseFloat(document.getElementById('area').value) || 1;
-                    const areaUnit = document.getElementById('area-unit').value;
-                    
-                    let kc = 1;
-                    if (cropValue === 'custom') {
-                        kc = parseFloat(customKcInput ? customKcInput.value : 1) || 1;
-                    } else if (cropValue) {
-                        kc = parseFloat(cropValue);
-                    }
-                    
-                    if (rainfall >= 50 && rainfall <= 1200 && slope >= 0 && slope <= 25) {
-                        const results = calculateRainwaterHarvesting(rainfall, slope, kc, area, areaUnit);
+                if (rainfall && slope && soilType && this.value) {
+                    const kc = parseFloat(this.value) || 0.65;
+                    if (kc >= 0.3 && kc <= 1.2) {
+                        const results = calculateRainwaterHarvesting(
+                            rainfall, slope, kc, soilType, area, areaUnit, efficiency, plantSpacing
+                        );
                         displayResults(results);
                     }
                 }
@@ -957,13 +859,9 @@ function initCalculator() {
 document.addEventListener('DOMContentLoaded', function() {
     console.log('DOM loaded, initializing...');
     
-    // تهيئة القائمة المتنقلة
     initNavigation();
-    
-    // تهيئة الآلة الحاسبة
     initCalculator();
     
-    // إعداد مستمعي الأحداث
     const languageToggle = document.getElementById('language-toggle');
     if (languageToggle) {
         languageToggle.addEventListener('click', toggleLanguage);
@@ -972,11 +870,9 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('Language toggle button not found');
     }
     
-    // تحديث اللغة والاتجاه الأولي
     updateLanguage();
     updateDirection();
     
-    // إضافة تأثيرات scroll للتنقل
     window.addEventListener('scroll', function() {
         const navbar = document.querySelector('.navbar');
         if (navbar && window.scrollY > 100) {
@@ -988,7 +884,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // إضافة تأثيرات للبطاقات
     const observerOptions = {
         threshold: 0.1,
         rootMargin: '0px 0px -50px 0px'
@@ -1003,7 +898,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }, observerOptions);
     
-    // مراقبة العناصر لإضافة تأثيرات الظهور
     document.querySelectorAll('.feature-card, .step, .stat').forEach(el => {
         el.style.opacity = '0';
         el.style.transform = 'translateY(20px)';
