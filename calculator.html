@@ -10,6 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
+    <!-- شريط التنقل العلوي -->
     <nav class="navbar">
         <div class="nav-container">
             <div class="nav-logo">
@@ -47,84 +48,58 @@
         <div class="container">
             <div class="calculator-header">
                 <h1 data-i18n="calculatorTitle">احسب ابتسامة أرضك</h1>
-                <p class="calculator-subtitle" data-i18n="calculatorSubtitle">آلة حاسبة علمية لتصميم أنظمة هلال الحصاد المائي</p>
-                <p class="calculator-description" data-i18n="calculatorDesc">نظام معتمد على معادلات علمية موثقة من منظمة الفاو والمراجع العالمية</p>
-                <div class="credibility-badge">
-                    <i class="fas fa-check-circle"></i>
-                    <span>معادلات علمية موثقة</span>
-                </div>
+                <p class="calculator-subtitle" data-i18n="calculatorSubtitle">آلة حاسبة لمعرفة حجم نظام هلال الحصاد المائي المناسب لأرضك</p>
+                <p class="calculator-description" data-i18n="calculatorDesc">أدخل بيانات أرضك للحصول على تصميم دقيق ومفصل لنظام حصاد مياه الأمطار</p>
             </div>
 
             <div class="calculator-layout">
+                <!-- لوحة الإدخال -->
                 <div class="input-panel">
                     <form id="rainwater-calculator">
                         <div class="form-section">
-                            <h2 data-i18n="basicData">البيانات المناخية والطبوغرافية</h2>
+                            <h2 data-i18n="basicData">البيانات الأساسية</h2>
                             
                             <div class="input-group">
                                 <label for="rainfall" data-i18n="rainfall">معدل هطول الأمطار السنوي *</label>
                                 <div class="input-with-unit">
-                                    <input type="number" id="rainfall" name="rainfall" min="50" max="1200" step="10" value="300" required>
+                                    <input type="number" id="rainfall" name="rainfall" min="50" max="1200" step="1" required>
                                     <span class="unit">مم/سنة</span>
                                 </div>
-                                <small data-i18n="rainfallHint">بناءً على بيانات محطات الأرصاد في الأردن</small>
+                                <small data-i18n="rainfallHint">يجب أن يكون بين 50 و 1200 مم/سنة</small>
                             </div>
                             
                             <div class="input-group">
                                 <label for="slope" data-i18n="slope">ميل الأرض *</label>
                                 <div class="input-with-unit">
-                                    <input type="number" id="slope" name="slope" min="0.5" max="25" step="0.5" value="5" required>
+                                    <input type="number" id="slope" name="slope" min="0" max="25" step="0.1" required>
                                     <span class="unit">%</span>
                                 </div>
-                                <small data-i18n="slopeHint">يؤثر على كفاءة تجميع المياه</small>
+                                <small data-i18n="slopeHint">يجب أن يكون بين 0 و 25%</small>
                             </div>
                             
                             <div class="input-group">
-                                <label for="soil-type" data-i18n="soilType">نوع التربة *</label>
-                                <select id="soil-type" name="soil-type" required>
-                                    <option value="sandy" data-i18n="sandy">رملية (نفاذية عالية)</option>
-                                    <option value="loamy" data-i18n="loamy">طميية (نفاذية متوسطة)</option>
-                                    <option value="clay" selected data-i18n="clay">طينية (نفاذية منخفضة)</option>
-                                </select>
-                                <small>يؤثر على معامل النفاذية</small>
-                            </div>
-                        </div>
-                        
-                        <div class="form-section">
-                            <h2 data-i18n="cropData">بيانات المحصول والنبات</h2>
-                            
-                            <div class="input-group">
-                                <label for="crop" data-i18n="cropType">نوع المحصول *</label>
-                                <select id="crop" name="crop" required>
+                                <label for="crop" data-i18n="cropType">نوع المحصول (اختياري)</label>
+                                <select id="crop" name="crop">
                                     <option value="">-- <span data-i18n="selectCrop">اختر نوع المحصول</span> --</option>
-                                    <option value="0.65" data-i18n="olive">الزيتون - شجرة معمرة</option>
-                                    <option value="0.75" data-i18n="pomegranate">الرمان - شجرة مثمرة</option>
-                                    <option value="0.70" data-i18n="almond">اللوز - شجرة معمرة</option>
-                                    <option value="0.60" data-i18n="fig">التين - شجرة مثمرة</option>
-                                    <option value="0.80" data-i18n="grape">العنب - متسلق معمر</option>
-                                    <option value="0.55" data-i18n="atriplex">القطف - شجيرة رعوية</option>
-                                    <option value="0.45" data-i18n="juniper">العرعر - شجرة حراجية</option>
-                                    <option value="0.40" data-i18n="thyme">الزعتر البري - نبات عطري</option>
-                                    <option value="0.50" data-i18n="sage">الميرمية - نبات طبي</option>
-                                    <option value="0.85" data-i18n="barley">الشعير - محصول حولي</option>
+                                    <option value="0.65" data-i18n="olive">الزيتون (Kc 0.65)</option>
+                                    <option value="0.75" data-i18n="pomegranate">الرمان (Kc 0.75)</option>
+                                    <option value="0.70" data-i18n="almond">اللوز (Kc 0.70)</option>
+                                    <option value="0.60" data-i18n="fig">التين (Kc 0.60)</option>
+                                    <option value="0.80" data-i18n="grape">العنب (Kc 0.80)</option>
+                                    <option value="0.55" data-i18n="atriplex">القطف (Kc 0.55)</option>
+                                    <option value="0.45" data-i18n="juniper">العرعر (Kc 0.45)</option>
+                                    <option value="0.40" data-i18n="thyme">الزعتر البري (Kc 0.40)</option>
+                                    <option value="0.50" data-i18n="sage">الميرمية (Kc 0.50)</option>
+                                    <option value="0.85" data-i18n="barley">الشعير (Kc 0.85)</option>
                                     <option value="custom" data-i18n="custom">قيمة مخصصة</option>
                                 </select>
-                                <small>معامل استهلاك المياه (Kc) حسب منظمة الفاو</small>
+                                <small>إذا لم تختر سيتم استخدام القيمة الافتراضية (1)</small>
                             </div>
                             
                             <div class="input-group custom-kc" id="custom-kc-group" style="display: none;">
                                 <label for="custom-kc" data-i18n="customKc">قيمة Kc مخصصة</label>
-                                <input type="number" id="custom-kc" name="custom-kc" min="0.3" max="1.2" step="0.05" placeholder="0.65">
-                                <small data-i18n="customKcHint">معامل المحصول - قيم منظمة الفاو بين 0.3-1.2</small>
-                            </div>
-
-                            <div class="input-group">
-                                <label for="plant-spacing">الكثافة النباتية المستهدفة</label>
-                                <div class="input-with-unit">
-                                    <input type="number" id="plant-spacing" name="plant-spacing" min="2" max="10" step="0.5" value="5">
-                                    <span class="unit">متر</span>
-                                </div>
-                                <small>المسافة بين الأشجار في الزراعة التقليدية</small>
+                                <input type="number" id="custom-kc" name="custom-kc" min="0.1" max="1.5" step="0.01" placeholder="0.5">
+                                <small data-i18n="customKcHint">معامل المحصول - اختياري (افتراضي 1 إذا لم تدخل قيمة)</small>
                             </div>
                         </div>
                         
@@ -145,42 +120,30 @@
                             </div>
                             
                             <div class="input-group">
-                                <label>كفاءة التجميع المستهدفة</label>
-                                <div class="efficiency-slider">
-                                    <input type="range" id="efficiency" name="efficiency" min="50" max="90" value="70" step="5">
-                                    <div class="slider-labels">
-                                        <span>50% (حد أدنى)</span>
-                                        <span id="efficiency-value">70%</span>
-                                        <span>90% (حد أقصى)</span>
-                                    </div>
-                                </div>
-                                <small>تؤثر على نسبة التجميع إلى الزراعة</small>
+                                <label for="soil-type" data-i18n="soilType">نوع التربة</label>
+                                <select id="soil-type" name="soil-type">
+                                    <option value="sandy" data-i18n="sandy">رملية</option>
+                                    <option value="loamy" data-i18n="loamy">طميية</option>
+                                    <option value="clay" selected data-i18n="clay">طينية</option>
+                                </select>
                             </div>
                         </div>
                         
                         <div class="form-actions">
-                            <button type="submit" class="btn btn-primary" data-i18n="calculateDesign">
-                                <i class="fas fa-calculator"></i>
-                                احسب التصميم العلمي
-                            </button>
-                            <button type="reset" class="btn btn-secondary" data-i18n="reset">
-                                <i class="fas fa-redo"></i>
-                                إعادة تعيين
-                            </button>
+                            <button type="submit" class="btn btn-primary" data-i18n="calculateDesign">احسب التصميم</button>
+                            <button type="reset" class="btn btn-secondary" data-i18n="reset">إعادة تعيين</button>
                         </div>
                     </form>
                 </div>
 
+                <!-- لوحة النتائج -->
                 <div class="results-panel" id="results-panel">
                     <div class="results-header">
-                        <h2 data-i18n="designResults">
-                            <i class="fas fa-clipboard-check"></i>
-                            نتائج التصميم العلمي
-                        </h2>
+                        <h2 data-i18n="designResults">نتائج التصميم</h2>
                         <div class="results-actions">
                             <button id="save-results" class="btn btn-success">
                                 <i class="fas fa-download"></i>
-                                <span data-i18n="saveResults">حفظ التقرير</span>
+                                <span data-i18n="saveResults">حفظ النتائج</span>
                             </button>
                             <button id="print-results" class="btn btn-warning">
                                 <i class="fas fa-print"></i>
@@ -190,13 +153,14 @@
                     </div>
 
                     <div class="results-content">
+                        <!-- ملخص النتائج -->
                         <div class="results-summary">
                             <div class="summary-card primary">
                                 <div class="summary-icon">
                                     <i class="fas fa-ruler-combined"></i>
                                 </div>
                                 <div class="summary-content">
-                                    <h3 data-i18n="basicDimensions">الأبعاد الهيدروليكية</h3>
+                                    <h3 data-i18n="basicDimensions">الأبعاد الرئيسية</h3>
                                     <div class="summary-values">
                                         <div class="summary-item">
                                             <span class="label" data-i18n="diameter">قطر الهلال</span>
@@ -205,10 +169,6 @@
                                         <div class="summary-item">
                                             <span class="label" data-i18n="height">ارتفاع السد</span>
                                             <span class="value" id="summary-height">-</span>
-                                        </div>
-                                        <div class="summary-item">
-                                            <span class="label">سعة التخزين</span>
-                                            <span class="value" id="summary-volume">-</span>
                                         </div>
                                     </div>
                                 </div>
@@ -219,7 +179,7 @@
                                     <i class="fas fa-arrows-alt-h"></i>
                                 </div>
                                 <div class="summary-content">
-                                    <h3 data-i18n="spacingAreas">التوزيع المكاني</h3>
+                                    <h3 data-i18n="spacingAreas">المسافات</h3>
                                     <div class="summary-values">
                                         <div class="summary-item">
                                             <span class="label" data-i18n="rowSpacing">بين الصفوف</span>
@@ -229,41 +189,34 @@
                                             <span class="label" data-i18n="pitSpacing">بين الهلالات</span>
                                             <span class="value" id="summary-pit-spacing">-</span>
                                         </div>
-                                        <div class="summary-item">
-                                            <span class="label">كثافة الهلالات</span>
-                                            <span class="value" id="summary-density">-</span>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
                             
                             <div class="summary-card accent">
                                 <div class="summary-icon">
-                                    <i class="fas fa-tint"></i>
+                                    <i class="fas fa-calculator"></i>
                                 </div>
                                 <div class="summary-content">
-                                    <h3 data-i18n="efficiency">الأداء المائي</h3>
+                                    <h3 data-i18n="efficiency">التكثيف</h3>
                                     <div class="summary-values">
                                         <div class="summary-item">
-                                            <span class="label">حجم المياه المجمعة</span>
-                                            <span class="value" id="summary-total-water">-</span>
+                                            <span class="label" data-i18n="pitsPerHectare">عدد الهلالات/هكتار</span>
+                                            <span class="value" id="summary-pits-hectare">-</span>
                                         </div>
                                         <div class="summary-item">
-                                            <span class="label" data-i18n="totalPits">عدد الهلالات</span>
+                                            <span class="label" data-i18n="totalPits">الإجمالي</span>
                                             <span class="value" id="summary-total-pits">-</span>
-                                        </div>
-                                        <div class="summary-item">
-                                            <span class="label">كفاءة التجميع</span>
-                                            <span class="value" id="summary-efficiency">-</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
+                        <!-- تفاصيل التصميم -->
                         <div class="design-details">
                             <div class="detail-card">
-                                <h3><i class="fas fa-ruler"></i> <span>الأبعاد الهيدروليكية</span></h3>
+                                <h3><i class="fas fa-ruler"></i> <span data-i18n="basicDimensions">الأبعاد الأساسية</span></h3>
                                 <div class="detail-list">
                                     <div class="detail-item">
                                         <span class="detail-label" data-i18n="diameter">قطر الهلال (D):</span>
@@ -276,159 +229,141 @@
                                         <span class="detail-source" data-i18n="eqE2">E-2</span>
                                     </div>
                                     <div class="detail-item">
-                                        <span class="detail-label">عمق التخزين (d):</span>
-                                        <span class="detail-value" id="result-depth">-</span>
-                                        <span class="detail-source">E-3</span>
-                                    </div>
-                                    <div class="detail-item">
-                                        <span class="detail-label" data-i18n="cultivatedArea">مساحة الزراعة (Aₗ):</span>
+                                        <span class="detail-label" data-i18n="cultivatedArea">مساحة الحوض الزراعي:</span>
                                         <span class="detail-value" id="result-cult-area">-</span>
-                                        <span class="detail-source" data-i18n="eqE3">E-4</span>
-                                    </div>
-                                    <div class="detail-item">
-                                        <span class="detail-label">سعة التخزين (V):</span>
-                                        <span class="detail-value" id="result-volume">-</span>
-                                        <span class="detail-source">E-5</span>
+                                        <span class="detail-source" data-i18n="eqE3">E-3</span>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="detail-card">
-                                <h3><i class="fas fa-arrows-alt-h"></i> <span data-i18n="spacingAreas">التوزيع المكاني</span></h3>
+                                <h3><i class="fas fa-arrows-alt-h"></i> <span data-i18n="spacingAreas">المسافات والتباعد</span></h3>
                                 <div class="detail-list">
                                     <div class="detail-item">
                                         <span class="detail-label" data-i18n="rowSpacing">المسافة بين الصفوف (L):</span>
                                         <span class="detail-value" id="result-row-spacing">-</span>
-                                        <span class="detail-source" data-i18n="eqE4">E-6</span>
+                                        <span class="detail-source" data-i18n="eqE4">E-4</span>
                                     </div>
                                     <div class="detail-item">
-                                        <span class="detail-label" data-i18n="pitSpacing">المسافة بين الهلالات (S):</span>
+                                        <span class="detail-label" data-i18n="pitSpacing">المسافة بين الحفر (Y):</span>
                                         <span class="detail-value" id="result-pit-spacing">-</span>
-                                        <span class="detail-source" data-i18n="eqE5">E-7</span>
+                                        <span class="detail-source" data-i18n="eqE5">E-5</span>
                                     </div>
                                     <div class="detail-item">
-                                        <span class="detail-label">كثافة الهلالات:</span>
-                                        <span class="detail-value" id="result-density">-</span>
-                                        <span class="detail-source">E-8</span>
+                                        <span class="detail-label" data-i18n="betweenBunds">المسافة بين الهلالات:</span>
+                                        <span class="detail-value" id="result-between-bunds">-</span>
+                                        <span class="detail-source">تصميم</span>
                                     </div>
                                     <div class="detail-item">
-                                        <span class="detail-label" data-i18n="catchmentArea">مساحة التجميع (A꜀):</span>
+                                        <span class="detail-label" data-i18n="catchmentArea">مساحة منطقة التجميع:</span>
                                         <span class="detail-value" id="result-catch-area">-</span>
-                                        <span class="detail-source" data-i18n="eqE7">E-9</span>
-                                    </div>
-                                    <div class="detail-item">
-                                        <span class="detail-label" data-i18n="caRatio">نسبة التجميع (C:A):</span>
-                                        <span class="detail-value" id="result-ca-ratio">-</span>
-                                        <span class="detail-source" data-i18n="eqE6">E-10</span>
+                                        <span class="detail-source" data-i18n="eqE7">E-7</span>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="detail-card">
-                                <h3><i class="fas fa-chart-line"></i> <span>الأداء المائي</span></h3>
+                                <h3><i class="fas fa-chart-line"></i> <span data-i18n="efficiency">الكفاءة والتكثيف</span></h3>
                                 <div class="detail-list">
                                     <div class="detail-item">
-                                        <span class="detail-label">حجم الأمطار المتاحة:</span>
-                                        <span class="detail-value" id="result-rain-volume">-</span>
-                                        <span class="detail-source">E-11</span>
+                                        <span class="detail-label" data-i18n="caRatio">نسبة التجميع إلى الزراعة (C:A):</span>
+                                        <span class="detail-value" id="result-ca-ratio">-</span>
+                                        <span class="detail-source" data-i18n="eqE6">E-6</span>
                                     </div>
                                     <div class="detail-item">
-                                        <span class="detail-label">حجم المياه المجمعة:</span>
-                                        <span class="detail-value" id="result-total-water">-</span>
-                                        <span class="detail-source">E-12</span>
+                                        <span class="detail-label" data-i18n="pitsPerHectare">عدد الحفر في الهكتار:</span>
+                                        <span class="detail-value" id="result-pits-per-hectare">-</span>
+                                        <span class="detail-source" data-i18n="eqE10">E-10</span>
                                     </div>
                                     <div class="detail-item">
-                                        <span class="detail-label">كفاءة التجميع:</span>
-                                        <span class="detail-value" id="result-efficiency">-</span>
-                                        <span class="detail-source">E-13</span>
-                                    </div>
-                                    <div class="detail-item">
-                                        <span class="detail-label" data-i18n="totalPits">إجمالي الهلالات:</span>
+                                        <span class="detail-label" data-i18n="totalPits">إجمالي عدد الحفر:</span>
                                         <span class="detail-value" id="result-total-pits">-</span>
-                                        <span class="detail-source">E-14</span>
-                                    </div>
-                                    <div class="detail-item">
-                                        <span class="detail-label">المساحة المزروعة:</span>
-                                        <span class="detail-value" id="result-total-cult-area">-</span>
-                                        <span class="detail-source">E-15</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
+                        <!-- قسم تفسير المسافات -->
                         <div class="explanation-section">
-                            <h3><i class="fas fa-info-circle"></i> <span>الأساس العلمي للتصميم</span></h3>
+                            <h3><i class="fas fa-info-circle"></i> <span data-i18n="spacingExplanation">تفسير المسافات والتباعد</span></h3>
                             <div class="explanation-content">
                                 <div class="explanation-item">
-                                    <h4>المبادئ الهيدرولوجية المستخدمة</h4>
-                                    <p>يعتمد التصميم على معادلات الحفاظ على الكتلة والطاقة في الأنظمة الهيدرولوجية. تم تعديل المعلمات بناءً على البحث الميداني في المناطق الجافة وشبه الجافة.</p>
+                                    <h4 data-i18n="whySpacing">لماذا هذه المسافات المحددة؟</h4>
+                                    <p data-i18n="spacingReason">تم حساب المسافات بناءً على الأبحاث الميدانية التي أظهرت أن التداخل بنسبة 5-10% بين الهلالات يمنع فقدان مياه الأمطار ويوفر تغطية مثالية للأرض.</p>
                                 </div>
                                 
                                 <div class="explanation-item">
-                                    <h4>منهجية حساب الأبعاد</h4>
-                                    <p><strong>قطر الهلال:</strong> يحسب بناءً على معدل الأمطار واحتياجات المحصول - معادلة لوغاريتمية تعكس العلاقة غير الخطية بين الأمطار ومساحة التجميع المطلوبة.</p>
-                                    <p><strong>ارتفاع السد:</strong> يحسب لتحقيق سعة تخزين تكفي لـ2-3 عواصف مطرية متتالية، مع الأخذ بالاعتبار استقرار المنشأ.</p>
-                                    <p><strong>نسبة التجميع:</strong> تحسب بناءً على معامل المحصول ونفاذية التربة ومعدل الأمطار لتحقيق توازن مائي أمثل.</p>
+                                    <h4 data-i18n="howCalculated">كيف تم حساب المسافات؟</h4>
+                                    <p><strong data-i18n="calculationMethod">المسافة بين الصفوف (L) = 0.75 × القطر - هذا يضمن تداخلاً رأسيًا يمنع تسرب المياه بين الصفوف.</strong></p>
+                                    <p><strong data-i18n="calculationMethod2">المسافة الأفقية (Y) = 1.10 × القطر - هذا يضمن تداخلاً أفقيًا بنسبة 10% لمنع وجود فجوات.</strong></p>
+                                    <p><strong>المسافة بين الهلالات = المسافة الأفقية - نصف القطر - توفر مساحة كافية للحركة والصيانة.</strong></p>
                                 </div>
 
                                 <div class="explanation-item">
-                                    <h4>المصادر العلمية المعتمدة</h4>
+                                    <h4 data-i18n="sourcesTitle">المصادر العلمية</h4>
                                     <div class="sources-list">
-                                        <div class="source-item">
-                                            <i class="fas fa-book"></i>
-                                            <div>
-                                                <strong>FAO Irrigation and Drainage Paper 56</strong>
-                                                <span> - معادلات الاحتياجات المائية للمحاصيل</span>
-                                            </div>
-                                        </div>
-                                        <div class="source-item">
-                                            <i class="fas fa-book"></i>
-                                            <div>
-                                                <strong>Soil Conservation Service (SCS) Method</strong>
-                                                <span> - تقدير الجريان السطحي</span>
-                                            </div>
-                                        </div>
-                                        <div class="source-item">
-                                            <i class="fas fa-book"></i>
-                                            <div>
-                                                <strong>Agricultural Engineering Standards</strong>
-                                                <span> - تصميم منشآت الحصاد المائي</span>
-                                            </div>
-                                        </div>
+                                        <a href="https://www.fao.org/3/cb9236en/cb9236en.pdf" target="_blank" class="source-link">
+                                            <i class="fas fa-external-link-alt"></i>
+                                            FAO - Water Harvesting Guide for Planners and Engineers
+                                        </a>
+                                        <a href="https://repository.icarda.org/handle/20.500.11766/12230" target="_blank" class="source-link">
+                                            <i class="fas fa-external-link-alt"></i>
+                                            ICARDA - Design Manual for Water-Harvesting Structures
+                                        </a>
+                                        <a href="https://doi.org/10.1016/j.catena.2022.106689" target="_blank" class="source-link">
+                                            <i class="fas fa-external-link-alt"></i>
+                                            CATENA - Micro-catchment Water Harvesting Meta-analysis
+                                        </a>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
+                        <!-- الرسوم البيانية -->
                         <div class="charts-section">
-                            <h3><i class="fas fa-chart-bar"></i> <span>التحليل الهيدرولوجي</span></h3>
+                            <h3><i class="fas fa-chart-bar"></i> <span data-i18n="visualResults">النتائج المرئية</span></h3>
                             <div class="chart-container">
                                 <canvas id="design-chart"></canvas>
                             </div>
                         </div>
 
-                        <div class="recommendations-section">
-                            <h3><i class="fas fa-lightbulb"></i> <span>توصيات التصميم والتنفيذ</span></h3>
-                            <div class="recommendations-grid">
-                                <div class="recommendation-card">
-                                    <i class="fas fa-shield-alt"></i>
-                                    <h4>استقرار المنشأ</h4>
-                                    <p>استخدم تربة طينية مع دمك جدار السد بنسبة ٩٥٪ من الكثافة الجافة القصوى</p>
+                        <!-- الرسم التوضيحي -->
+                        <div class="illustration-section">
+                            <h3><i class="fas fa-drafting-compass"></i> <span data-i18n="designIllustration">الرسم التوضيحي للتصميم</span></h3>
+                            <div class="illustration-container">
+                                <div class="half-moon-illustration">
+                                    <div class="terrain-line"></div>
+                                    <div class="half-moon-shape"></div>
+                                    <div class="dimension-lines">
+                                        <div class="dimension diameter-dim">
+                                            <span class="dim-label" id="illustration-diameter">D</span>
+                                        </div>
+                                        <div class="dimension height-dim">
+                                            <span class="dim-label" id="illustration-height">H</span>
+                                        </div>
+                                        <div class="dimension spacing-dim">
+                                            <span class="dim-label" id="illustration-spacing">L</span>
+                                        </div>
+                                    </div>
+                                    <div class="cultivation-area"></div>
+                                    <div class="catchment-area"></div>
+                                    <!-- إضافة هلالات إضافية للتوضيح -->
+                                    <div class="adjacent-bund"></div>
+                                    <div class="adjacent-bund second"></div>
                                 </div>
-                                <div class="recommendation-card">
-                                    <i class="fas fa-tree"></i>
-                                    <h4>الزراعة</h4>
-                                    <p>ازرع الشتلات في منتصف الهلال بعد إنشائه مباشرة لاستغلال الرطبة المخزنة</p>
-                                </div>
-                                <div class="recommendation-card">
-                                    <i class="fas fa-tools"></i>
-                                    <h4>الصيانة</h4>
-                                    <p>افحص الهلالات بعد كل عاصفة مطرية وأصلح أي تلف في جدران السدود</p>
-                                </div>
-                                <div class="recommendation-card">
-                                    <i class="fas fa-chart-line"></i>
-                                    <h4>المتابعة</h4>
-                                    <p>سجل كميات الأمطار وملاحظات النمو لتعديل التصميم في المستقبل</p>
+                                <div class="illustration-legend">
+                                    <div class="legend-item">
+                                        <div class="legend-color cult-color"></div>
+                                        <span data-i18n="cultivationArea">منطقة الزراعة</span>
+                                    </div>
+                                    <div class="legend-item">
+                                        <div class="legend-color catch-color"></div>
+                                        <span data-i18n="catchmentArea">منطقة التجميع</span>
+                                    </div>
+                                    <div class="legend-item">
+                                        <div class="legend-color spacing-color"></div>
+                                        <span>منطقة التباعد</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -446,12 +381,12 @@
                         <i class="fas fa-leaf"></i>
                         <span data-i18n="siteTitle">احسب ابتسامة أرضك</span>
                     </div>
-                    <p class="footer-description">نظام علمي لتصميم أنظمة حصاد مياه الأمطار - معادلات موثقة</p>
+                    <p class="footer-description" data-i18n="footerDesc">نظام متكامل لتصميم أنظمة حصاد مياه الأمطار</p>
                 </div>
             </div>
             
             <div class="footer-bottom">
-                <p>&copy; 2025 <span data-i18n="siteTitle">احسب ابتسامة أرضك</span>. <span>نظام علمي معتمد</span></p>
+                <p>&copy; 2025 <span data-i18n="siteTitle">احسب ابتسامة أرضك</span>. <span data-i18n="designedBy">صمم من قبل عمر ياسين</span></p>
             </div>
         </div>
     </footer>
