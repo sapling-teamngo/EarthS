@@ -507,36 +507,57 @@ const unitConversions = {
 function calculateRainwaterHarvesting(P, S, Kc, area, areaUnit) {
     console.log('Input values:', { P, S, Kc, area, areaUnit });
     
-    // E-1: حساب القطر بناءً على معدل الأمطار (معادلة منطقية)
-    let D = 8.5 + (1200 - P) / 300; // أكثر منطقية: قطر أكبر في المناطق الجافة
+    // E-1: حساب القطر بناءً على معدل الأمطار
+    let D = 8.5 + (1200 - P) / 300;
     D = Math.max(2, Math.min(12, D));
     
-    // E-2: حساب الارتفاع بناءً على القطر (منطقي)
+    // E-2: حساب الارتفاع بناءً على القطر
     let H = 20 + 3 * (D - 2);
     H = Math.max(25, Math.min(50, H));
     
-    // E-3: حساب مساحة الحوض الزراعي (صحيح)
+    // E-3: حساب مساحة الحوض الزراعي
     const A_cult = (Math.PI / 8) * Math.pow(D, 2);
     
-    // E-4: حساب المسافة بين الصفوف (منطقي)
-    const L = 0.75 * D; // تداخل أفضل
+    // E-4: حساب المسافة بين الصفوف
+    const L = 0.75 * D;
     
-    // E-5: حساب المسافة بين الحفر (منطقي)
-    const Y = 1.10 * D; // تداخل 10% أفضل
+    // E-5: حساب المسافة بين الحفر
+    const Y = 1.10 * D;
     
     // حساب المسافة بين الهلالات
     const betweenBunds = Y - (D / 2);
     
-    // E-6: حساب نسبة التجميع إلى الزراعة (معادلة محسنة مع تأثير Kc واضح)
-    // Kc له تأثير مباشر على C:A - كلما زاد Kc زادت الحاجة للمياه وزادت مساحة التجميع
-    let C_A = 0.35 * Kc * Math.pow(P / 100, -0.35) * Math.exp(0.018 * S);
-    C_A = Math.max(1.0, Math.min(4.0, C_A));
+    // E-6: حساب نسبة التجميع إلى الزراعة (C:A) - المعادلة المصححة
+    let baseC_A;
     
-    console.log('C:A calculation:', {
-        base: 0.35,
-        kcEffect: Kc,
-        rainfallEffect: Math.pow(P / 100, -0.35),
-        slopeEffect: Math.exp(0.018 * S),
+    if (P <= 200) {
+        // مناطق جافة جداً - تحتاج مساحات تجميع كبيرة
+        baseC_A = 3.5 + (0.5 * Kc);
+    } else if (P <= 400) {
+        // مناطق جافة
+        baseC_A = 2.5 + (0.4 * Kc);
+    } else if (P <= 600) {
+        // مناطق شبه جافة
+        baseC_A = 1.8 + (0.3 * Kc);
+    } else {
+        // مناطق رطبة نسبياً
+        baseC_A = 1.2 + (0.2 * Kc);
+    }
+    
+    // تأثير الميل
+    let slopeEffect = 1 + (S * 0.02);
+    
+    let C_A = baseC_A * slopeEffect;
+    
+    // ضمان الحدود المعقولة
+    C_A = Math.max(1.0, Math.min(6.0, C_A));
+    
+    console.log('C:A calculation details:', {
+        rainfall: P,
+        kc: Kc,
+        slope: S,
+        baseC_A: baseC_A,
+        slopeEffect: slopeEffect,
         finalC_A: C_A
     });
     
@@ -777,6 +798,20 @@ function initCalculator() {
                 } else {
                     if (customKcGroup) customKcGroup.style.display = 'none';
                 }
+                
+                // إعادة الحساب فوراً عند تغيير المحصول
+                if (this.value !== '' && this.value !== 'custom') {
+                    const rainfall = parseFloat(document.getElementById('rainfall').value);
+                    const slope = parseFloat(document.getElementById('slope').value);
+                    const area = parseFloat(document.getElementById('area').value) || 1;
+                    const areaUnit = document.getElementById('area-unit').value;
+                    
+                    if (rainfall && slope) {
+                        const kc = parseFloat(this.value);
+                        const results = calculateRainwaterHarvesting(rainfall, slope, kc, area, areaUnit);
+                        displayResults(results);
+                    }
+                }
             });
         }
         
@@ -857,6 +892,58 @@ function initCalculator() {
                 if (rainfall && slope && this.value) {
                     const kc = parseFloat(this.value) || 1;
                     if (kc >= 0.1 && kc <= 1.5) {
+                        const results = calculateRainwaterHarvesting(rainfall, slope, kc, area, areaUnit);
+                        displayResults(results);
+                    }
+                }
+            });
+        }
+        
+        // إضافة event listeners للحقول الأخرى لتحديث النتائج فوراً
+        const rainfallInput = document.getElementById('rainfall');
+        const slopeInput = document.getElementById('slope');
+        
+        if (rainfallInput) {
+            rainfallInput.addEventListener('input', function() {
+                if (this.value && document.getElementById('slope').value) {
+                    const rainfall = parseFloat(this.value);
+                    const slope = parseFloat(document.getElementById('slope').value);
+                    const cropValue = cropSelect ? cropSelect.value : '';
+                    const area = parseFloat(document.getElementById('area').value) || 1;
+                    const areaUnit = document.getElementById('area-unit').value;
+                    
+                    let kc = 1;
+                    if (cropValue === 'custom') {
+                        kc = parseFloat(customKcInput ? customKcInput.value : 1) || 1;
+                    } else if (cropValue) {
+                        kc = parseFloat(cropValue);
+                    }
+                    
+                    if (rainfall >= 50 && rainfall <= 1200 && slope >= 0 && slope <= 25) {
+                        const results = calculateRainwaterHarvesting(rainfall, slope, kc, area, areaUnit);
+                        displayResults(results);
+                    }
+                }
+            });
+        }
+        
+        if (slopeInput) {
+            slopeInput.addEventListener('input', function() {
+                if (this.value && document.getElementById('rainfall').value) {
+                    const slope = parseFloat(this.value);
+                    const rainfall = parseFloat(document.getElementById('rainfall').value);
+                    const cropValue = cropSelect ? cropSelect.value : '';
+                    const area = parseFloat(document.getElementById('area').value) || 1;
+                    const areaUnit = document.getElementById('area-unit').value;
+                    
+                    let kc = 1;
+                    if (cropValue === 'custom') {
+                        kc = parseFloat(customKcInput ? customKcInput.value : 1) || 1;
+                    } else if (cropValue) {
+                        kc = parseFloat(cropValue);
+                    }
+                    
+                    if (rainfall >= 50 && rainfall <= 1200 && slope >= 0 && slope <= 25) {
                         const results = calculateRainwaterHarvesting(rainfall, slope, kc, area, areaUnit);
                         displayResults(results);
                     }
