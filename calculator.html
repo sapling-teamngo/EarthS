@@ -60,7 +60,7 @@
                             <h2>البيانات الأساسية</h2>
                             
                             <div class="input-group">
-                                <label for="rainfall">معدل هطول الأمطار السنوي</label>
+                                <label for="rainfall">معدل هطول الأمطار السنوي *</label>
                                 <div class="input-with-unit">
                                     <input type="number" id="rainfall" name="rainfall" min="50" max="1200" step="1" required>
                                     <span class="unit">مم/سنة</span>
@@ -69,7 +69,7 @@
                             </div>
                             
                             <div class="input-group">
-                                <label for="slope">ميل الأرض</label>
+                                <label for="slope">ميل الأرض *</label>
                                 <div class="input-with-unit">
                                     <input type="number" id="slope" name="slope" min="0" max="25" step="0.1" required>
                                     <span class="unit">%</span>
@@ -78,8 +78,8 @@
                             </div>
                             
                             <div class="input-group">
-                                <label for="crop">نوع المحصول</label>
-                                <select id="crop" name="crop" required>
+                                <label for="crop">نوع المحصول (اختياري)</label>
+                                <select id="crop" name="crop">
                                     <option value="">-- اختر نوع المحصول --</option>
                                     <option value="0.55">الزيتون (مرحلة التأسيس)</option>
                                     <option value="0.60">الرمان</option>
@@ -88,12 +88,13 @@
                                     <option value="0.45">العرعر (شتلات حرجية)</option>
                                     <option value="custom">قيمة مخصصة</option>
                                 </select>
+                                <small>إذا لم تختر سيتم استخدام القيمة الافتراضية (1)</small>
                             </div>
                             
                             <div class="input-group custom-kc" id="custom-kc-group" style="display: none;">
                                 <label for="custom-kc">قيمة Kc مخصصة</label>
-                                <input type="number" id="custom-kc" name="custom-kc" min="0.1" max="1.5" step="0.01">
-                                <small>معامل المحصول - اختياري (افتراضي حسب نوع المحصول)</small>
+                                <input type="number" id="custom-kc" name="custom-kc" min="0.1" max="1.5" step="0.01" placeholder="0.5">
+                                <small>معامل المحصول - اختياري (افتراضي 1 إذا لم تدخل قيمة)</small>
                             </div>
                         </div>
                         
@@ -101,7 +102,7 @@
                             <h2>بيانات المساحة</h2>
                             
                             <div class="input-group">
-                                <label for="area">مساحة الأرض</label>
+                                <label for="area">مساحة الأرض *</label>
                                 <div class="input-with-unit">
                                     <input type="number" id="area" name="area" min="0.1" step="0.1" value="1" required>
                                     <select id="area-unit" name="area-unit">
@@ -135,16 +136,82 @@
                     <div class="results-header">
                         <h2>نتائج التصميم</h2>
                         <div class="results-actions">
-                            <button id="save-results" class="btn btn-outline">حفظ النتائج</button>
-                            <button id="print-results" class="btn btn-outline">طباعة</button>
+                            <button id="save-results" class="btn btn-success">
+                                <i class="fas fa-download"></i>
+                                حفظ النتائج
+                            </button>
+                            <button id="print-results" class="btn btn-warning">
+                                <i class="fas fa-print"></i>
+                                طباعة النتائج
+                            </button>
                         </div>
                     </div>
 
                     <div class="results-content">
+                        <!-- ملخص النتائج -->
+                        <div class="results-summary">
+                            <div class="summary-card primary">
+                                <div class="summary-icon">
+                                    <i class="fas fa-ruler-combined"></i>
+                                </div>
+                                <div class="summary-content">
+                                    <h3>الأبعاد الرئيسية</h3>
+                                    <div class="summary-values">
+                                        <div class="summary-item">
+                                            <span class="label">قطر الهلال</span>
+                                            <span class="value" id="summary-diameter">-</span>
+                                        </div>
+                                        <div class="summary-item">
+                                            <span class="label">ارتفاع السد</span>
+                                            <span class="value" id="summary-height">-</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="summary-card secondary">
+                                <div class="summary-icon">
+                                    <i class="fas fa-arrows-alt-h"></i>
+                                </div>
+                                <div class="summary-content">
+                                    <h3>المسافات</h3>
+                                    <div class="summary-values">
+                                        <div class="summary-item">
+                                            <span class="label">بين الصفوف</span>
+                                            <span class="value" id="summary-row-spacing">-</span>
+                                        </div>
+                                        <div class="summary-item">
+                                            <span class="label">بين الهلالات</span>
+                                            <span class="value" id="summary-pit-spacing">-</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="summary-card accent">
+                                <div class="summary-icon">
+                                    <i class="fas fa-calculator"></i>
+                                </div>
+                                <div class="summary-content">
+                                    <h3>التكثيف</h3>
+                                    <div class="summary-values">
+                                        <div class="summary-item">
+                                            <span class="label">عدد الهلالات/هكتار</span>
+                                            <span class="value" id="summary-pits-hectare">-</span>
+                                        </div>
+                                        <div class="summary-item">
+                                            <span class="label">الإجمالي</span>
+                                            <span class="value" id="summary-total-pits">-</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- تفاصيل التصميم -->
                         <div class="design-details">
                             <div class="detail-card">
-                                <h3>الأبعاد الأساسية</h3>
+                                <h3><i class="fas fa-ruler"></i> الأبعاد الأساسية</h3>
                                 <div class="detail-list">
                                     <div class="detail-item">
                                         <span class="detail-label">قطر الهلال (D):</span>
@@ -165,7 +232,7 @@
                             </div>
 
                             <div class="detail-card">
-                                <h3>المسافات والتباعد</h3>
+                                <h3><i class="fas fa-arrows-alt-h"></i> المسافات والتباعد</h3>
                                 <div class="detail-list">
                                     <div class="detail-item">
                                         <span class="detail-label">المسافة بين الصفوف (L):</span>
@@ -191,7 +258,7 @@
                             </div>
 
                             <div class="detail-card">
-                                <h3>الكفاءة والتكثيف</h3>
+                                <h3><i class="fas fa-chart-line"></i> الكفاءة والتكثيف</h3>
                                 <div class="detail-list">
                                     <div class="detail-item">
                                         <span class="detail-label">نسبة التجميع إلى الزراعة (C:A):</span>
@@ -213,7 +280,7 @@
 
                         <!-- قسم تفسير المسافات -->
                         <div class="explanation-section">
-                            <h3>تفسير المسافات والتباعد</h3>
+                            <h3><i class="fas fa-info-circle"></i> تفسير المسافات والتباعد</h3>
                             <div class="explanation-content">
                                 <div class="explanation-item">
                                     <h4>لماذا هذه المسافات المحددة؟</h4>
@@ -222,9 +289,9 @@
                                 
                                 <div class="explanation-item">
                                     <h4>كيف تم حساب المسافات؟</h4>
-                                    <p>المسافة بين الصفوف (L) = 0.60 × القطر - هذا يضمن تداخلاً رأسيًا يمنع تسرب المياه بين الصفوف.</p>
-                                    <p>المسافة الأفقية (Y) = 1.05 × القطر - هذا يضمن تداخلاً أفقيًا بنسبة 5% لمنع وجود فجوات.</p>
-                                    <p>المسافة بين الهلالات = المسافة الأفقية - نصف القطر - توفر مساحة كافية للحركة والصيانة.</p>
+                                    <p><strong>المسافة بين الصفوف (L) = 0.60 × القطر</strong> - هذا يضمن تداخلاً رأسيًا يمنع تسرب المياه بين الصفوف.</p>
+                                    <p><strong>المسافة الأفقية (Y) = 1.05 × القطر</strong> - هذا يضمن تداخلاً أفقيًا بنسبة 5% لمنع وجود فجوات.</p>
+                                    <p><strong>المسافة بين الهلالات = المسافة الأفقية - نصف القطر</strong> - توفر مساحة كافية للحركة والصيانة.</p>
                                 </div>
 
                                 <div class="explanation-item">
@@ -249,7 +316,7 @@
 
                         <!-- الرسوم البيانية -->
                         <div class="charts-section">
-                            <h3>النتائج المرئية</h3>
+                            <h3><i class="fas fa-chart-bar"></i> النتائج المرئية</h3>
                             <div class="chart-container">
                                 <canvas id="design-chart"></canvas>
                             </div>
@@ -257,7 +324,7 @@
 
                         <!-- الرسم التوضيحي -->
                         <div class="illustration-section">
-                            <h3>الرسم التوضيحي للتصميم</h3>
+                            <h3><i class="fas fa-drafting-compass"></i> الرسم التوضيحي للتصميم</h3>
                             <div class="illustration-container">
                                 <div class="half-moon-illustration">
                                     <div class="terrain-line"></div>
