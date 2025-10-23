@@ -75,7 +75,7 @@ const translations = {
         juniper: "العرعر (شتلات حرجية)", 
         custom: "قيمة مخصصة",
         customKc: "قيمة Kc مخصصة",
-        customKcHint: "معامل المحصول - اختياري (افتراضي حسب نوع المحصول)",
+        customKcHint: "معامل المحصول - اختياري (افتراضي 1 إذا لم تدخل قيمة)",
         areaData: "بيانات المساحة", 
         landArea: "مساحة الأرض",
         hectare: "هكتار",
@@ -92,7 +92,7 @@ const translations = {
         // النتائج
         designResults: "نتائج التصميم",
         saveResults: "حفظ النتائج", 
-        printResults: "طباعة",
+        printResults: "طباعة النتائج",
         basicDimensions: "الأبعاد الأساسية",
         diameter: "قطر الهلال (D)",
         height: "ارتفاع السد (H)", 
@@ -202,7 +202,7 @@ const translations = {
         juniper: "Juniper (Forest Seedlings)",
         custom: "Custom Value",
         customKc: "Custom Kc Value",
-        customKcHint: "Crop coefficient - optional (default based on crop type)",
+        customKcHint: "Crop coefficient - optional (default 1 if no value entered)",
         areaData: "Area Data",
         landArea: "Land Area",
         hectare: "Hectare",
@@ -219,7 +219,7 @@ const translations = {
         // Results
         designResults: "Design Results",
         saveResults: "Save Results",
-        printResults: "Print",
+        printResults: "Print Results",
         basicDimensions: "Basic Dimensions",
         diameter: "Half-moon Diameter (D)",
         height: "Bund Height (H)",
@@ -405,6 +405,14 @@ function displayResults(results) {
     document.getElementById('result-pits-per-hectare').textContent = `${results.pitsPerHectare}`;
     document.getElementById('result-total-pits').textContent = `${results.totalPits}`;
     
+    // تحديث ملخص النتائج
+    document.getElementById('summary-diameter').textContent = `${results.diameter.toFixed(2)} م`;
+    document.getElementById('summary-height').textContent = `${results.height.toFixed(1)} سم`;
+    document.getElementById('summary-row-spacing').textContent = `${results.rowSpacing.toFixed(2)} م`;
+    document.getElementById('summary-pit-spacing').textContent = `${results.pitSpacing.toFixed(2)} م`;
+    document.getElementById('summary-pits-hectare').textContent = `${results.pitsPerHectare}`;
+    document.getElementById('summary-total-pits').textContent = `${results.totalPits}`;
+    
     // تحديث الرسم التوضيحي
     document.getElementById('illustration-diameter').textContent = `D = ${results.diameter.toFixed(2)}m`;
     document.getElementById('illustration-height').textContent = `H = ${results.height.toFixed(1)}cm`;
@@ -464,7 +472,7 @@ function createCharts(results) {
                     '#f57c00',
                     '#7b1fa2'
                 ],
-                borderWidth: 1
+                borderWidth: 2
             }]
         },
         options: {
@@ -475,7 +483,19 @@ function createCharts(results) {
                     beginAtZero: true,
                     title: {
                         display: true,
-                        text: currentLang === 'ar' ? 'القيمة' : 'Value'
+                        text: currentLang === 'ar' ? 'القيمة' : 'Value',
+                        font: {
+                            size: 14,
+                            weight: 'bold'
+                        }
+                    },
+                    grid: {
+                        color: 'rgba(0,0,0,0.1)'
+                    }
+                },
+                x: {
+                    grid: {
+                        color: 'rgba(0,0,0,0.1)'
                     }
                 }
             },
@@ -487,7 +507,8 @@ function createCharts(results) {
                     display: true,
                     text: currentLang === 'ar' ? 'ملخص قيم التصميم' : 'Design Values Summary',
                     font: {
-                        size: 16
+                        size: 16,
+                        weight: 'bold'
                     }
                 }
             }
@@ -567,10 +588,8 @@ function initCalculator() {
         cropSelect.addEventListener('change', function() {
             if (this.value === 'custom') {
                 customKcGroup.style.display = 'block';
-                customKcInput.required = true;
             } else {
                 customKcGroup.style.display = 'none';
-                customKcInput.required = false;
             }
         });
         
@@ -585,11 +604,12 @@ function initCalculator() {
             const area = parseFloat(document.getElementById('area').value) || 1;
             const areaUnit = document.getElementById('area-unit').value;
             
-            // تحديد قيمة Kc
-            let kc;
+            // تحديد قيمة Kc (افتراضي 1 إذا لم يتم الاختيار)
+            let kc = 1; // القيمة الافتراضية
+            
             if (cropValue === 'custom') {
-                kc = parseFloat(customKcInput.value) || 0.5;
-            } else {
+                kc = parseFloat(customKcInput.value) || 1;
+            } else if (cropValue) {
                 kc = parseFloat(cropValue);
             }
             
@@ -641,7 +661,10 @@ document.addEventListener('DOMContentLoaded', function() {
     initCalculator();
     
     // إعداد مستمعي الأحداث
-    document.getElementById('language-toggle').addEventListener('click', toggleLanguage);
+    const languageToggle = document.getElementById('language-toggle');
+    if (languageToggle) {
+        languageToggle.addEventListener('click', toggleLanguage);
+    }
     
     // تحديث اللغة والاتجاه الأولي
     updateLanguage();
