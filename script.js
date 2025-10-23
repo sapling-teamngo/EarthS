@@ -1,10 +1,6 @@
 // نظام الترجمة ثنائي اللغة
 const translations = {
     ar: {
-        // العناوين الجديدة
-        siteTitle: "احسب ابتسامة أرضك",
-        siteSubtitle: "آلة حاسبة لمعرفة حجم نظام هلال الحصاد المائي المناسب لأرضك",
-        
         // التنقل
         home: "الرئيسية",
         calculator: "الآلة الحاسبة", 
@@ -128,10 +124,6 @@ const translations = {
         eqE10: "E-10"
     },
     en: {
-        // New titles
-        siteTitle: "Calculate Your Land's Smile",
-        siteSubtitle: "Calculator to determine the appropriate crescent water harvesting system size for your land",
-        
         // Navigation
         home: "Home",
         calculator: "Calculator",
@@ -268,6 +260,7 @@ function toggleLanguage() {
 
 // وظيفة تحديث النصوص
 function updateLanguage() {
+    // تحديث جميع العناصر التي تحتوي على data-i18n
     document.querySelectorAll('[data-i18n]').forEach(element => {
         const key = element.getAttribute('data-i18n');
         if (translations[currentLang][key]) {
@@ -276,13 +269,74 @@ function updateLanguage() {
     });
     
     // تحديث نص زر اللغة
-    document.getElementById('lang-text').textContent = currentLang === 'ar' ? 'English' : 'العربية';
+    const langText = document.getElementById('lang-text');
+    if (langText) {
+        langText.textContent = currentLang === 'ar' ? 'English' : 'العربية';
+    }
     
     // تحديث اتجاه النماذج
     updateFormDirection();
     
     // تحديث عناوين الصفحة
     updatePageTitles();
+    
+    // تحديث خيارات المحاصيل
+    updateCropOptions();
+    
+    // تحديث الرسوم البيانية إذا كانت موجودة
+    updateChartsLanguage();
+}
+
+// تحديث خيارات المحاصيل
+function updateCropOptions() {
+    const cropSelect = document.getElementById('crop');
+    if (!cropSelect) return;
+    
+    // حفظ القيمة المحددة حالياً
+    const currentValue = cropSelect.value;
+    
+    // تحديث النص الافتراضي
+    const defaultOption = cropSelect.querySelector('option[value=""]');
+    if (defaultOption) {
+        defaultOption.textContent = `-- ${translations[currentLang].selectCrop} --`;
+    }
+    
+    // تحديث خيارات المحاصيل
+    const options = cropSelect.querySelectorAll('option[value]');
+    options.forEach(option => {
+        const value = option.value;
+        if (value === '0.55') {
+            option.textContent = translations[currentLang].olive;
+        } else if (value === '0.60') {
+            option.textContent = translations[currentLang].pomegranate;
+        } else if (value === '0.65') {
+            option.textContent = translations[currentLang].almond;
+        } else if (value === '0.50') {
+            option.textContent = translations[currentLang].fodder;
+        } else if (value === '0.45') {
+            option.textContent = translations[currentLang].juniper;
+        } else if (value === 'custom') {
+            option.textContent = translations[currentLang].custom;
+        }
+    });
+    
+    // إعادة تعيين القيمة المحددة
+    cropSelect.value = currentValue;
+}
+
+// تحديث الرسوم البيانية
+function updateChartsLanguage() {
+    if (window.designChart) {
+        const labels = currentLang === 'ar' ? 
+            ['القطر (م)', 'الارتفاع (سم)', 'مساحة الزراعة (م²)', 'مساحة التجميع (م²)'] :
+            ['Diameter (m)', 'Height (cm)', 'Cultivation Area (m²)', 'Catchment Area (m²)'];
+        
+        window.designChart.data.labels = labels;
+        window.designChart.options.plugins.title.text = currentLang === 'ar' ? 
+            'ملخص قيم التصميم' : 'Design Values Summary';
+        window.designChart.options.scales.y.title.text = currentLang === 'ar' ? 'القيمة' : 'Value';
+        window.designChart.update();
+    }
 }
 
 // وظيفة تحديث اتجاه الصفحة
@@ -302,10 +356,20 @@ function updateFormDirection() {
 
 // وظيفة تحديث عناوين الصفحة
 function updatePageTitles() {
-    if (currentLang === 'ar') {
-        document.title = "احسب ابتسامة أرضك - نظام حصاد مياه الأمطار";
+    const path = window.location.pathname;
+    
+    if (path.includes('calculator.html')) {
+        document.title = currentLang === 'ar' ? 
+            "احسب ابتسامة أرضك - الآلة الحاسبة" : 
+            "Calculate Your Land's Smile - Calculator";
+    } else if (path.includes('docs.html')) {
+        document.title = currentLang === 'ar' ? 
+            "احسب ابتسامة أرضك - التوثيق" : 
+            "Calculate Your Land's Smile - Documentation";
     } else {
-        document.title = "Calculate Your Land's Smile - Rainwater Harvesting System";
+        document.title = currentLang === 'ar' ? 
+            "احسب ابتسامة أرضك - نظام حصاد مياه الأمطار" : 
+            "Calculate Your Land's Smile - Rainwater Harvesting System";
     }
 }
 
@@ -394,22 +458,22 @@ function calculateRainwaterHarvesting(P, S, Kc, area, areaUnit) {
 // عرض النتائج
 function displayResults(results) {
     // تحديث القيم النصية
-    document.getElementById('result-diameter').textContent = `${results.diameter.toFixed(2)} م`;
-    document.getElementById('result-height').textContent = `${results.height.toFixed(1)} سم`;
-    document.getElementById('result-cult-area').textContent = `${results.cultArea.toFixed(2)} م²`;
-    document.getElementById('result-row-spacing').textContent = `${results.rowSpacing.toFixed(2)} م`;
-    document.getElementById('result-pit-spacing').textContent = `${results.pitSpacing.toFixed(2)} م`;
-    document.getElementById('result-between-bunds').textContent = `${results.betweenBunds.toFixed(2)} م`;
-    document.getElementById('result-catch-area').textContent = `${results.catchArea.toFixed(2)} م²`;
+    document.getElementById('result-diameter').textContent = `${results.diameter.toFixed(2)} ${currentLang === 'ar' ? 'م' : 'm'}`;
+    document.getElementById('result-height').textContent = `${results.height.toFixed(1)} ${currentLang === 'ar' ? 'سم' : 'cm'}`;
+    document.getElementById('result-cult-area').textContent = `${results.cultArea.toFixed(2)} ${currentLang === 'ar' ? 'م²' : 'm²'}`;
+    document.getElementById('result-row-spacing').textContent = `${results.rowSpacing.toFixed(2)} ${currentLang === 'ar' ? 'م' : 'm'}`;
+    document.getElementById('result-pit-spacing').textContent = `${results.pitSpacing.toFixed(2)} ${currentLang === 'ar' ? 'م' : 'm'}`;
+    document.getElementById('result-between-bunds').textContent = `${results.betweenBunds.toFixed(2)} ${currentLang === 'ar' ? 'م' : 'm'}`;
+    document.getElementById('result-catch-area').textContent = `${results.catchArea.toFixed(2)} ${currentLang === 'ar' ? 'م²' : 'm²'}`;
     document.getElementById('result-ca-ratio').textContent = `${results.caRatio.toFixed(2)}`;
     document.getElementById('result-pits-per-hectare').textContent = `${results.pitsPerHectare}`;
     document.getElementById('result-total-pits').textContent = `${results.totalPits}`;
     
     // تحديث ملخص النتائج
-    document.getElementById('summary-diameter').textContent = `${results.diameter.toFixed(2)} م`;
-    document.getElementById('summary-height').textContent = `${results.height.toFixed(1)} سم`;
-    document.getElementById('summary-row-spacing').textContent = `${results.rowSpacing.toFixed(2)} م`;
-    document.getElementById('summary-pit-spacing').textContent = `${results.pitSpacing.toFixed(2)} م`;
+    document.getElementById('summary-diameter').textContent = `${results.diameter.toFixed(2)} ${currentLang === 'ar' ? 'م' : 'm'}`;
+    document.getElementById('summary-height').textContent = `${results.height.toFixed(1)} ${currentLang === 'ar' ? 'سم' : 'cm'}`;
+    document.getElementById('summary-row-spacing').textContent = `${results.rowSpacing.toFixed(2)} ${currentLang === 'ar' ? 'م' : 'm'}`;
+    document.getElementById('summary-pit-spacing').textContent = `${results.pitSpacing.toFixed(2)} ${currentLang === 'ar' ? 'م' : 'm'}`;
     document.getElementById('summary-pits-hectare').textContent = `${results.pitsPerHectare}`;
     document.getElementById('summary-total-pits').textContent = `${results.totalPits}`;
     
