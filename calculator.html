@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>آلة حاسبة لتصميم حصاد مياه الأمطار</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>آلة حاسبة لتصميم حصاد مياه الأمطار</h1>
+            <p>أدخل البيانات المطلوبة للحصول على تصميم دقيق لنظام حصاد مياه الأمطار</p>
+        </div>
+    </header>
+
+    <nav>
+        <div class="container">
+            <ul>
+                <li><a href="index.html">الرئيسية</a></li>
+                <li><a href="calculator.html" class="active">الآلة الحاسبة</a></li>
+                <li><a href="docs.html">التوثيق</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div class="calculator-container">
+            <form id="rainwater-calculator">
+                <div class="form-section">
+                    <h2>البيانات الأساسية</h2>
+                    
+                    <div class="input-group">
+                        <label for="rainfall">معدل هطول الأمطار السنوي (مم/سنة)</label>
+                        <input type="number" id="rainfall" name="rainfall" min="50" max="1200" step="1" required>
+                        <small>يجب أن يكون بين 50 و 1200 مم/سنة</small>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="slope">ميل الأرض (%)</label>
+                        <input type="number" id="slope" name="slope" min="0" max="25" step="0.1" required>
+                        <small>يجب أن يكون بين 0 و 25%</small>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="crop">نوع المحصول</label>
+                        <select id="crop" name="crop" required>
+                            <option value="">-- اختر نوع المحصول --</option>
+                            <option value="0.55">الزيتون (مرحلة التأسيس)</option>
+                            <option value="0.60">الرمان</option>
+                            <option value="0.65">اللوز</option>
+                            <option value="0.50">القطف / الشجيرات الرعوية</option>
+                            <option value="0.45">العرعر (شتلات حرجية)</option>
+                            <option value="custom">قيمة مخصصة</option>
+                        </select>
+                    </div>
+                    
+                    <div class="input-group custom-kc" id="custom-kc-group" style="display: none;">
+                        <label for="custom-kc">قيمة Kc مخصصة</label>
+                        <input type="number" id="custom-kc" name="custom-kc" min="0.1" max="1.5" step="0.01">
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h2>خيارات إضافية (اختياري)</h2>
+                    
+                    <div class="input-group">
+                        <label for="area">مساحة الأرض (هكتار)</label>
+                        <input type="number" id="area" name="area" min="0.1" step="0.1" value="1">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="soil-type">نوع التربة</label>
+                        <select id="soil-type" name="soil-type">
+                            <option value="sandy">رملية</option>
+                            <option value="loamy">طميية</option>
+                            <option value="clay" selected>طينية</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn primary">احسب التصميم</button>
+                    <button type="reset" class="btn secondary">إعادة تعيين</button>
+                </div>
+            </form>
+            
+            <div id="results" class="results-section" style="display: none;">
+                <h2>نتائج التصميم</h2>
+                <div class="results-grid">
+                    <div class="result-card">
+                        <h3>الأبعاد الأساسية</h3>
+                        <div class="result-item">
+                            <span class="label">قطر الهلال (D):</span>
+                            <span class="value" id="result-diameter">-</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">ارتفاع السد (H):</span>
+                            <span class="value" id="result-height">-</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">مساحة الحوض الزراعي:</span>
+                            <span class="value" id="result-cult-area">-</span>
+                        </div>
+                    </div>
+                    
+                    <div class="result-card">
+                        <h3>المسافات والمساحات</h3>
+                        <div class="result-item">
+                            <span class="label">المسافة بين الصفوف (L):</span>
+                            <span class="value" id="result-row-spacing">-</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">المسافة بين الحفر (Y):</span>
+                            <span class="value" id="result-pit-spacing">-</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">مساحة منطقة التجميع:</span>
+                            <span class="value" id="result-catch-area">-</span>
+                        </div>
+                    </div>
+                    
+                    <div class="result-card">
+                        <h3>التكثيف والكفاءة</h3>
+                        <div class="result-item">
+                            <span class="label">نسبة التجميع إلى الزراعة (C:A):</span>
+                            <span class="value" id="result-ca-ratio">-</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">عدد الحفر في الهكتار:</span>
+                            <span class="value" id="result-pits-per-hectare">-</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">إجمالي عدد الحفر:</span>
+                            <span class="value" id="result-total-pits">-</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="results-actions">
+                    <button id="save-results" class="btn primary">حفظ النتائج</button>
+                    <button id="print-results" class="btn secondary">طباعة النتائج</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>© 2025 نظام حصاد مياه الأمطار. جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
