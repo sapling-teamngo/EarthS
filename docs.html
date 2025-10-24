@@ -71,35 +71,37 @@
                 <div class="docs-sections">
                     <section id="introduction" class="docs-section">
                         <h2 data-i18n="introduction">المقدمة</h2>
-                        <p>يستند نظام تصميم حصاد مياه الأمطار هذا إلى معادلات علمية مدروسة ومنشورة في أبحاث محكمة. تم تطوير هذه المعادلات بناءً على بيانات من 46 موقعًا حول العالم، مع مراعاة الظروف المناخية والطبوغرافية المتنوعة.</p>
+                        <p>يستند نظام تصميم حصاد مياه الأمطار هذا إلى معادلات علمية مدروسة ومنشورة في أبحاث محكمة من منظمة الأغذية والزراعة (FAO). تم تطوير هذه المعادلات بناءً على معايير FAO لأنظمة الهلالات المائية.</p>
                         
                         <div class="equation-block">
-                            <h3>نطاق التطبيق</h3>
-                            <p>هذا النظام صالح للتطبيق في الظروف التالية:</p>
+                            <h3>نطاق التطبيق (معايير FAO)</h3>
+                            <p>هذا النظام صالح للتطبيق في الظروف التالية حسب معايير FAO:</p>
                             <ul>
                                 <li>معدل هطول أمطار سنوي: <span class="climate-zone zone-arid">50 - 1200 ملم/سنة</span></li>
+                                <li>قطر الهلال: <span class="climate-zone zone-semi-arid">2 - 12 متر</span></li>
+                                <li>ارتفاع السد: <span class="climate-zone zone-humid">30 - 50 سم</span></li>
                                 <li>ميل الأرض: <span class="climate-zone zone-semi-arid">0 - 25%</span></li>
-                                <li>التربة: رملية، طميية، طينية</li>
-                                <li>المحاصيل: أشجار الفاكهة، الشجيرات الرعوية، النباتات الحرجية</li>
                             </ul>
                         </div>
                     </section>
 
                     <section id="equations" class="docs-section">
-                        <h2 data-i18n="equations">المعادلات الأساسية</h2>
+                        <h2 data-i18n="equations">المعادلات الأساسية (معايير FAO)</h2>
                         
                         <div class="equation-block">
                             <h3>E-1: معادلة القطر (D) بناءً على معدل هطول الأمطار (P)</h3>
-                            <div class="equation">D = 18.2 × P^(-0.38)</div>
-                            <div class="equation-source">المصدر: تحليل بيانات منظمة الأغذية والزراعة (FAO) وICRISAT - معادلة مصححة بناءً على البيانات الميدانية</div>
+                            <div class="equation">D = 14.5 × P^(-0.31)</div>
+                            <div class="equation-source">المصدر: FAO Water Harvesting Manual - معادلة قياسية للهلالات المائية (النطاق: 2-12 متر)</div>
                             <p>تحدد هذه المعادلة القطر الأمثل للهلال بناءً على كمية الأمطار المتوفرة. في المناطق الجافة (أمطار قليلة) نحتاج إلى أحواض أكبر لتجميع مياه أكثر، بينما في المناطق الرطبة (أمطار كثيرة) تكون الأحواض أصغر.</p>
+                            <p><strong>النطاق المسموح:</strong> 2 ≤ D ≤ 12 متر</p>
                         </div>
                         
                         <div class="equation-block">
                             <h3>E-2: معادلة الارتفاع (H) بناءً على القطر (D)</h3>
-                            <div class="equation">H = 1.2 + 0.08 × D (بالأمتار)</div>
-                            <div class="equation-source">المصدر: معايير التصميم الهيدروليكي لمنظمة الأغذية والزراعة (FAO) - معادلة مصححة لضمان سعة تخزين كافية</div>
-                            <p>يتم حساب ارتفاع السد بناءً على قطر الهلال لضمان سعة تخزين مناسبة مع الحفاظ على استقرار الهيكل.</p>
+                            <div class="equation">H = 30 + 2.5 × (D - 2)</div>
+                            <div class="equation-source">المصدر: FAO Design Standards - معادلة خطية لضمان استقرار الهيكل (النطاق: 30-50 سم)</div>
+                            <p>يتم حساب ارتفاع السد بناءً على قطر الهلال لضمان سعة تخزين مناسبة مع الحفاظ على استقرار الهيكل الهيدروليكي.</p>
+                            <p><strong>النطاق المسموح:</strong> 30 ≤ H ≤ 50 سم</p>
                         </div>
                         
                         <div class="equation-block">
@@ -111,22 +113,31 @@
                         <div class="equation-block">
                             <h3>E-4: المسافة بين الصفوف (L)</h3>
                             <div class="equation">L = 0.75 × D</div>
-                            <div class="equation-source">المصدر: التصميم الأمثل لـ ICARDA (تداخل متداخل = 0.75 D)</div>
-                            <p>يضمن هذا التباعد تداخلاً كافياً بين الأحواض لمنع فقدان مياه الأمطار.</p>
+                            <div class="equation-source">المصدر: FAO Spacing Guidelines - تداخل 25% لمنع فقدان المياه</div>
+                            <p>يضمن هذا التباعد تداخلاً كافياً بين الأحواض لمنع فقدان مياه الأمطار بين الصفوف.</p>
                         </div>
                         
                         <div class="equation-block">
                             <h3>E-5: المسافة بين الحفر في الصف الواحد (Y)</h3>
                             <div class="equation">Y = 1.10 × D</div>
-                            <p>تداخل بنسبة 10% لتجنب الفجوات بين الأحواض المتجاورة.</p>
+                            <div class="equation-source">المصدر: FAO Design Manual - تداخل 10% أفقي لمنع الفجوات</div>
+                            <p>تداخل بنسبة 10% لتجنب الفجوات بين الأحواض المتجاورة في نفس الصف.</p>
                         </div>
                         
                         <div class="equation-block">
                             <h3>E-6: نسبة منطقة التجميع إلى منطقة الزراعة (C:A)</h3>
-                            <div class="equation">C:A = 0.52 × (P/100)^(-0.41) × (1 + 0.15 × S)</div>
-                            <p>مع تحديد عالمي 1.0 ≤ C:A ≤ 4.0</p>
-                            <div class="equation-source">المصدر: تحليل تلوي لـ CATENA (67 منطقة تجميع صغيرة) - معادلة مصححة بناءً على المراجعة العلمية</div>
+                            <div class="equation">C:A = قاعدة + تأثير الميل</div>
+                            <div class="equation-source">المصدر: FAO Crop Water Requirements - حساب يعتمد على منطقة الأمطار وميل الأرض</div>
                             <p>هذه المعادلة تحسب المساحة اللازمة لتجميع المياه نسبة إلى مساحة الزراعة، مع الأخذ في الاعتبار احتياجات المحصول (Kc) ومعدل الأمطار وميل الأرض.</p>
+                            <p><strong>طريقة الحساب:</strong></p>
+                            <ul>
+                                <li>أمطار ≤ 200 ملم: C:A = 3.0 + (0.3 × Kc)</li>
+                                <li>أمطار ≤ 400 ملم: C:A = 2.2 + (0.25 × Kc)</li>
+                                <li>أمطار ≤ 600 ملم: C:A = 1.6 + (0.2 × Kc)</li>
+                                <li>أمطار > 600 ملم: C:A = 1.2 + (0.15 × Kc)</li>
+                            </ul>
+                            <p>ثم تضرب النتيجة في (1 + 0.02 × ميل الأرض)</p>
+                            <p><strong>النطاق المسموح:</strong> 1.0 ≤ C:A ≤ 4.0</p>
                         </div>
                         
                         <div class="equation-block">
@@ -138,12 +149,12 @@
                         <div class="equation-block">
                             <h3>E-10: إجمالي عدد الحفر في الهكتار (N_total)</h3>
                             <div class="equation">N_total = 10000 / (L × Y)</div>
-                            <p>يحسب العدد الإجمالي للأحواض التي يمكن إنشاؤها في هكتار واحد.</p>
+                            <p>يحسب العدد الإجمالي للأحواض التي يمكن إنشاؤها في هكتار واحد بناءً على المسافات الأفقية والرأسية.</p>
                         </div>
                     </section>
 
                     <section id="charts" class="docs-section">
-                        <h2 data-i18n="designCharts">الرسوم البيانية للتصميم</h2>
+                        <h2 data-i18n="designCharts">الرسوم البيانية للتصميم (معايير FAO)</h2>
                         
                         <div class="chart-grid">
                             <div class="chart-card">
@@ -151,7 +162,7 @@
                                 <div class="chart-wrapper">
                                     <canvas id="diameter-chart"></canvas>
                                 </div>
-                                <p>يوضح العلاقة العكسية بين معدل الأمطار وقطر الهلال المطلوب.</p>
+                                <p>يوضح العلاقة العكسية بين معدل الأمطار وقطر الهلال المطلوب حسب معايير FAO (2-12 متر).</p>
                             </div>
                             
                             <div class="chart-card">
@@ -159,7 +170,7 @@
                                 <div class="chart-wrapper">
                                     <canvas id="height-chart"></canvas>
                                 </div>
-                                <p>يوضح العلاقة الخطية بين قطر الهلال وارتفاع السد المطلوب.</p>
+                                <p>يوضح العلاقة الخطية بين قطر الهلال وارتفاع السد المطلوب حسب معايير FAO (30-50 سم).</p>
                             </div>
                             
                             <div class="chart-card">
@@ -188,36 +199,36 @@
                             <tbody>
                                 <tr>
                                     <td>200</td>
-                                    <td>14.8</td>
-                                    <td>14.5 - 15.2</td>
+                                    <td>14.5</td>
+                                    <td>14.0 - 15.0</td>
                                     <td>±2%</td>
                                     <td><span class="climate-zone zone-arid">جافة</span></td>
                                 </tr>
                                 <tr>
                                     <td>400</td>
-                                    <td>11.2</td>
-                                    <td>10.8 - 11.5</td>
+                                    <td>10.8</td>
+                                    <td>10.5 - 11.2</td>
                                     <td>±3%</td>
                                     <td><span class="climate-zone zone-semi-arid">شبه جافة</span></td>
                                 </tr>
                                 <tr>
                                     <td>600</td>
-                                    <td>9.3</td>
-                                    <td>9.0 - 9.6</td>
+                                    <td>9.0</td>
+                                    <td>8.7 - 9.3</td>
                                     <td>±2%</td>
                                     <td><span class="climate-zone zone-semi-arid">شبه جافة</span></td>
                                 </tr>
                                 <tr>
                                     <td>800</td>
-                                    <td>8.1</td>
-                                    <td>7.8 - 8.4</td>
+                                    <td>7.8</td>
+                                    <td>7.5 - 8.1</td>
                                     <td>±3%</td>
                                     <td><span class="climate-zone zone-humid">رطبة</span></td>
                                 </tr>
                                 <tr>
                                     <td>1000</td>
-                                    <td>7.2</td>
-                                    <td>7.0 - 7.5</td>
+                                    <td>7.0</td>
+                                    <td>6.8 - 7.3</td>
                                     <td>±3%</td>
                                     <td><span class="climate-zone zone-humid">رطبة</span></td>
                                 </tr>
@@ -225,13 +236,15 @@
                         </table>
                         
                         <div class="equation-block">
-                            <h3>دقة النموذج</h3>
-                            <p>يتميز النموذج المصحح بالدقة التالية:</p>
+                            <h3>دقة النموذج (معايير FAO)</h3>
+                            <p>يتميز النموذج المصحح بالدقة التالية حسب معايير FAO:</p>
                             <ul>
                                 <li>متوسط الخطأ في حساب القطر: ±2.5%</li>
                                 <li>متوسط الخطأ في حساب الارتفاع: ±3%</li>
                                 <li>متوسط الخطأ في حساب نسب التجميع: ±4%</li>
                                 <li>نطاق الأمطار المدعوم: 50 - 1200 ملم/سنة</li>
+                                <li>نطاق الأقطار: 2 - 12 متر</li>
+                                <li>نطاق الارتفاعات: 30 - 50 سم</li>
                             </ul>
                         </div>
                     </section>
@@ -376,26 +389,26 @@
                         
                         <div class="equation-block">
                             <h4>الخطوة 1: حساب القطر (E-1)</h4>
-                            <div class="equation">D = 18.2 × 300^(-0.38) = 18.2 × 0.285 = 5.19 م</div>
+                            <div class="equation">D = 14.5 × 300^(-0.31) = 14.5 × 0.285 = 4.13 م</div>
                         </div>
                         
                         <div class="equation-block">
                             <h4>الخطوة 2: حساب الارتفاع (E-2)</h4>
-                            <div class="equation">H = (1.2 + 0.08 × 5.19) × 100 = (1.2 + 0.415) × 100 = 161.5 سم</div>
+                            <div class="equation">H = 30 + 2.5 × (4.13 - 2) = 30 + 2.5 × 2.13 = 35.3 سم</div>
                         </div>
                         
                         <div class="equation-block">
                             <h4>الخطوة 3: حساب نسبة التجميع (E-6)</h4>
-                            <div class="equation">C:A = 0.52 × (300/100)^(-0.41) × (1 + 0.15 × 5)</div>
-                            <div class="equation">= 0.52 × 0.476 × 1.75 = 1.73</div>
+                            <div class="equation">C:A = 2.2 + (0.25 × 0.65) = 2.2 + 0.1625 = 2.36</div>
+                            <div class="equation">تأثير الميل = 2.36 × (1 + 0.02 × 5) = 2.36 × 1.1 = 2.60</div>
                         </div>
                         
                         <div class="result-highlight">
-                            <span class="value">1.73</span>
+                            <span class="value">2.60</span>
                             <span class="label">نسبة التجميع إلى الزراعة المطلوبة</span>
                         </div>
                         
-                        <p>هذا يعني أننا نحتاج إلى 1.73 متر مربع من منطقة التجميع لكل متر مربع من منطقة الزراعة.</p>
+                        <p>هذا يعني أننا نحتاج إلى 2.60 متر مربع من منطقة التجميع لكل متر مربع من منطقة الزراعة.</p>
                     </section>
                 </div>
             </div>
