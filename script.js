@@ -524,7 +524,8 @@ function calculateRainwaterHarvesting(P, S, Kc, area, areaUnit) {
     console.log('Input values:', { P, S, Kc, area, areaUnit });
     
     // E-1: حساب القطر بناءً على معدل الأمطار (FAO Standard: 2-12m)
-    let D = 14.5 * Math.pow(P, -0.31);
+    // Linear interpolation between 2m at 50mm and 12m at 1200mm
+    let D = 2 + ((P - 50) / (1200 - 50)) * (12 - 2);
     D = Math.max(2, Math.min(12, D));
     
     // E-2: حساب الارتفاع بناءً على القطر (FAO Standard: 30-50cm)
@@ -795,344 +796,245 @@ Designed by Omar Yaseen - 2025
     alert(currentLang === 'ar' ? 'تم حفظ النتائج بنجاح!' : 'Results saved successfully!');
 }
 
-// تهيئة الآلة الحاسبة
-function initCalculator() {
-    const calculatorForm = document.getElementById('rainwater-calculator');
+// طباعة النتائج
+function printResults() {
+    window.print();
+}
+
+// التحقق من صحة المدخلات
+function validateInputs() {
+    const rainfall = parseFloat(document.getElementById('rainfall').value);
+    const slope = parseFloat(document.getElementById('slope').value);
+    const area = parseFloat(document.getElementById('land-area').value);
+    
+    if (isNaN(rainfall) || rainfall < 50 || rainfall > 1200) {
+        alert(currentLang === 'ar' ? 
+            'يرجى إدخال معدل أمطار صحيح بين 50 و 1200 مم/سنة' : 
+            'Please enter a valid rainfall rate between 50 and 1200 mm/year');
+        return false;
+    }
+    
+    if (isNaN(slope) || slope < 0 || slope > 25) {
+        alert(currentLang === 'ar' ? 
+            'يرجى إدخال ميل أرض صحيح بين 0 و 25%' : 
+            'Please enter a valid land slope between 0 and 25%');
+        return false;
+    }
+    
+    if (isNaN(area) || area <= 0) {
+        alert(currentLang === 'ar' ? 
+            'يرجى إدخال مساحة أرض صحيحة' : 
+            'Please enter a valid land area');
+        return false;
+    }
+    
+    return true;
+}
+
+// إعادة تعيين النموذج
+function resetForm() {
+    document.getElementById('calculator-form').reset();
+    document.getElementById('results-panel').style.display = 'none';
+    document.getElementById('custom-kc-group').style.display = 'none';
+    
+    // إعادة تعيين الرسم البياني
+    if (window.designChart) {
+        window.designChart.destroy();
+        window.designChart = null;
+    }
+}
+
+// إدارة خيار Kc المخصص
+function toggleCustomKc() {
     const cropSelect = document.getElementById('crop');
     const customKcGroup = document.getElementById('custom-kc-group');
+    
+    if (cropSelect.value === 'custom') {
+        customKcGroup.style.display = 'block';
+    } else {
+        customKcGroup.style.display = 'none';
+    }
+}
+
+// الحصول على قيمة Kc
+function getKcValue() {
+    const cropSelect = document.getElementById('crop');
     const customKcInput = document.getElementById('custom-kc');
     
-    if (calculatorForm) {
-        // معالجة اختيار المحصول المخصص
-        if (cropSelect) {
-            cropSelect.addEventListener('change', function() {
-                if (this.value === 'custom') {
-                    if (customKcGroup) customKcGroup.style.display = 'block';
-                } else {
-                    if (customKcGroup) customKcGroup.style.display = 'none';
-                }
-                
-                // إعادة الحساب فوراً عند تغيير المحصول
-                if (this.value !== '' && this.value !== 'custom') {
-                    const rainfall = parseFloat(document.getElementById('rainfall').value);
-                    const slope = parseFloat(document.getElementById('slope').value);
-                    const area = parseFloat(document.getElementById('area').value) || 1;
-                    const areaUnit = document.getElementById('area-unit').value;
-                    
-                    if (rainfall && slope) {
-                        const kc = parseFloat(this.value);
-                        const results = calculateRainwaterHarvesting(rainfall, slope, kc, area, areaUnit);
-                        displayResults(results);
-                    }
-                }
-            });
-        }
-        
-        // معالجة إرسال النموذج
-        calculatorForm.addEventListener('submit', function(e) {
+    if (cropSelect.value === 'custom') {
+        const customKc = parseFloat(customKcInput.value);
+        return isNaN(customKc) ? 1.0 : Math.max(0.1, Math.min(1.0, customKc));
+    }
+    
+    return parseFloat(cropSelect.value) || 1.0;
+}
+
+// تهيئة الآلة الحاسبة
+function initCalculator() {
+    const form = document.getElementById('calculator-form');
+    const resetBtn = document.getElementById('reset-btn');
+    const saveBtn = document.getElementById('save-results');
+    const printBtn = document.getElementById('print-results');
+    const cropSelect = document.getElementById('crop');
+    
+    if (form) {
+        form.addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // جمع البيانات من النموذج
+            if (!validateInputs()) return;
+            
+            // جمع البيانات
             const rainfall = parseFloat(document.getElementById('rainfall').value);
             const slope = parseFloat(document.getElementById('slope').value);
-            const cropValue = cropSelect ? cropSelect.value : '';
-            const area = parseFloat(document.getElementById('area').value) || 1;
+            const area = parseFloat(document.getElementById('land-area').value);
             const areaUnit = document.getElementById('area-unit').value;
+            const Kc = getKcValue();
             
-            // تحديد قيمة Kc (افتراضي 1 إذا لم يتم الاختيار)
-            let kc = 1; // القيمة الافتراضية
-            
-            if (cropValue === 'custom') {
-                kc = parseFloat(customKcInput ? customKcInput.value : 1) || 1;
-            } else if (cropValue) {
-                kc = parseFloat(cropValue);
-            }
-            
-            console.log('Form values:', { rainfall, slope, cropValue, kc, area, areaUnit });
-            
-            // التحقق من صحة البيانات
-            if (rainfall < 50 || rainfall > 1200) {
-                alert(currentLang === 'ar' ? 
-                    'معدل هطول الأمطار يجب أن يكون بين 50 و 1200 مم/سنة' :
-                    'Rainfall rate must be between 50 and 1200 mm/year');
-                return;
-            }
-            
-            if (slope < 0 || slope > 25) {
-                alert(currentLang === 'ar' ?
-                    'ميل الأرض يجب أن يكون بين 0 و 25%' :
-                    'Land slope must be between 0 and 25%');
-                return;
-            }
-            
-            if (kc < 0.1 || kc > 1.5) {
-                alert(currentLang === 'ar' ?
-                    'قيمة Kc يجب أن تكون بين 0.1 و 1.5' :
-                    'Kc value must be between 0.1 and 1.5');
-                return;
-            }
-            
-            // حساب النتائج
-            const results = calculateRainwaterHarvesting(rainfall, slope, kc, area, areaUnit);
+            // الحساب
+            const results = calculateRainwaterHarvesting(rainfall, slope, Kc, area, areaUnit);
             
             // عرض النتائج
             displayResults(results);
         });
-        
-        // زر حفظ النتائج
-        const saveBtn = document.getElementById('save-results');
-        if (saveBtn) {
-            saveBtn.addEventListener('click', saveResults);
-        }
-        
-        // زر طباعة النتائج
-        const printBtn = document.getElementById('print-results');
-        if (printBtn) {
-            printBtn.addEventListener('click', function() {
-                window.print();
-            });
-        }
-        
-        // إضافة event listener لحقل Kc المخصص لتحديث الحسابات مباشرة
-        if (customKcInput) {
-            customKcInput.addEventListener('input', function() {
-                // إذا كان النموذج يحتوي على بيانات صالحة، قم بإعادة الحساب
-                const rainfall = parseFloat(document.getElementById('rainfall').value);
-                const slope = parseFloat(document.getElementById('slope').value);
-                const area = parseFloat(document.getElementById('area').value) || 1;
-                const areaUnit = document.getElementById('area-unit').value;
-                
-                if (rainfall && slope && this.value) {
-                    const kc = parseFloat(this.value) || 1;
-                    if (kc >= 0.1 && kc <= 1.5) {
-                        const results = calculateRainwaterHarvesting(rainfall, slope, kc, area, areaUnit);
-                        displayResults(results);
-                    }
-                }
-            });
-        }
-        
-        // إضافة event listeners للحقول الأخرى لتحديث النتائج فوراً
-        const rainfallInput = document.getElementById('rainfall');
-        const slopeInput = document.getElementById('slope');
-        
-        if (rainfallInput) {
-            rainfallInput.addEventListener('input', function() {
-                if (this.value && document.getElementById('slope').value) {
-                    const rainfall = parseFloat(this.value);
-                    const slope = parseFloat(document.getElementById('slope').value);
-                    const cropValue = cropSelect ? cropSelect.value : '';
-                    const area = parseFloat(document.getElementById('area').value) || 1;
-                    const areaUnit = document.getElementById('area-unit').value;
-                    
-                    let kc = 1;
-                    if (cropValue === 'custom') {
-                        kc = parseFloat(customKcInput ? customKcInput.value : 1) || 1;
-                    } else if (cropValue) {
-                        kc = parseFloat(cropValue);
-                    }
-                    
-                    if (rainfall >= 50 && rainfall <= 1200 && slope >= 0 && slope <= 25) {
-                        const results = calculateRainwaterHarvesting(rainfall, slope, kc, area, areaUnit);
-                        displayResults(results);
-                    }
-                }
-            });
-        }
-        
-        if (slopeInput) {
-            slopeInput.addEventListener('input', function() {
-                if (this.value && document.getElementById('rainfall').value) {
-                    const slope = parseFloat(this.value);
-                    const rainfall = parseFloat(document.getElementById('rainfall').value);
-                    const cropValue = cropSelect ? cropSelect.value : '';
-                    const area = parseFloat(document.getElementById('area').value) || 1;
-                    const areaUnit = document.getElementById('area-unit').value;
-                    
-                    let kc = 1;
-                    if (cropValue === 'custom') {
-                        kc = parseFloat(customKcInput ? customKcInput.value : 1) || 1;
-                    } else if (cropValue) {
-                        kc = parseFloat(cropValue);
-                    }
-                    
-                    if (rainfall >= 50 && rainfall <= 1200 && slope >= 0 && slope <= 25) {
-                        const results = calculateRainwaterHarvesting(rainfall, slope, kc, area, areaUnit);
-                        displayResults(results);
-                    }
-                }
-            });
-        }
+    }
+    
+    if (resetBtn) {
+        resetBtn.addEventListener('click', resetForm);
+    }
+    
+    if (saveBtn) {
+        saveBtn.addEventListener('click', saveResults);
+    }
+    
+    if (printBtn) {
+        printBtn.addEventListener('click', printResults);
+    }
+    
+    if (cropSelect) {
+        cropSelect.addEventListener('change', toggleCustomKc);
     }
 }
 
-// إنشاء الرسوم البيانية للتوثيق
-function createDocumentationCharts() {
-    // مخطط 1: القطر مقابل الأمطار (FAO Range: 2-12m)
-    const diameterCtx = document.getElementById('diameter-chart');
-    if (diameterCtx) {
-        const P = Array.from({length: 116}, (_, i) => i + 50);
-        const D = P.map(p => {
-            let d = 14.5 * Math.pow(p, -0.31);
-            return Math.max(2, Math.min(12, d));
+// تهيئة الرسوم البيانية للتوثيق
+function initDocsCharts() {
+    const validationChartCtx = document.getElementById('validation-chart');
+    const designChartCtx = document.getElementById('docs-design-chart');
+    
+    if (validationChartCtx) {
+        // رسم بياني للتحقق من صحة القطر مقابل الأمطار
+        new Chart(validationChartCtx.getContext('2d'), {
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    label: currentLang === 'ar' ? 'القطر مقابل الأمطار' : 'Diameter vs Rainfall',
+                    data: [
+                        {x: 50, y: 2},
+                        {x: 200, y: 3.67},
+                        {x: 400, y: 5.33},
+                        {x: 600, y: 7},
+                        {x: 800, y: 9.33},
+                        {x: 1000, y: 11},
+                        {x: 1200, y: 12}
+                    ],
+                    backgroundColor: '#4caf50',
+                    borderColor: '#388e3c',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: currentLang === 'ar' ? 'معدل الأمطار (مم/سنة)' : 'Rainfall (mm/year)',
+                            font: {
+                                size: 14,
+                                weight: 'bold'
+                            }
+                        },
+                        min: 0,
+                        max: 1300
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: currentLang === 'ar' ? 'قطر الهلال (م)' : 'Crescent Diameter (m)',
+                            font: {
+                                size: 14,
+                                weight: 'bold'
+                            }
+                        },
+                        min: 0,
+                        max: 14
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: currentLang === 'ar' ? 'القطر مقابل الأمطار' : 'Diameter vs Rainfall',
+                        font: {
+                            size: 16,
+                            weight: 'bold'
+                        }
+                    }
+                }
+            }
         });
-        
-        new Chart(diameterCtx, {
+    }
+    
+    if (designChartCtx) {
+        // رسم بياني للارتفاع مقابل القطر
+        new Chart(designChartCtx.getContext('2d'), {
             type: 'line',
             data: {
-                labels: P,
+                labels: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
                 datasets: [{
-                    label: currentLang === 'ar' ? 'القطر (م)' : 'Diameter (m)',
-                    data: D,
-                    borderColor: '#4caf50',
-                    backgroundColor: 'rgba(76, 175, 80, 0.1)',
+                    label: currentLang === 'ar' ? 'الارتفاع (سم)' : 'Height (cm)',
+                    data: [30, 32.5, 35, 37.5, 40, 42.5, 45, 47.5, 50, 50, 50],
+                    backgroundColor: '#2196f3',
+                    borderColor: '#1976d2',
                     borderWidth: 3,
-                    fill: true,
+                    fill: false,
                     tension: 0.4
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                plugins: {
-                    title: {
-                        display: true,
-                        text: currentLang === 'ar' ? 'القطر مقابل معدل الأمطار (نطاق FAO: 2-12 م)' : 'Diameter vs Rainfall (FAO Range: 2-12m)',
-                        font: { size: 16, weight: 'bold' }
-                    }
-                },
                 scales: {
                     x: {
                         title: {
                             display: true,
-                            text: currentLang === 'ar' ? 'معدل الأمطار (مم/سنة)' : 'Rainfall (mm/year)'
+                            text: currentLang === 'ar' ? 'قطر الهلال (م)' : 'Crescent Diameter (m)',
+                            font: {
+                                size: 14,
+                                weight: 'bold'
+                            }
                         }
                     },
                     y: {
                         title: {
                             display: true,
-                            text: currentLang === 'ar' ? 'القطر (م)' : 'Diameter (m)'
-                        },
-                        min: 0,
-                        max: 15
-                    }
-                }
-            }
-        });
-    }
-    
-    // مخطط 2: الارتفاع مقابل القطر (FAO Range: 30-50cm)
-    const heightCtx = document.getElementById('height-chart');
-    if (heightCtx) {
-        const D = Array.from({length: 101}, (_, i) => 2 + (i / 10));
-        const H = D.map(d => {
-            let h = 30 + 2.5 * (d - 2);
-            return Math.max(30, Math.min(50, h));
-        });
-        
-        new Chart(heightCtx, {
-            type: 'line',
-            data: {
-                labels: D.map(d => d.toFixed(1)),
-                datasets: [{
-                    label: currentLang === 'ar' ? 'الارتفاع (سم)' : 'Height (cm)',
-                    data: H,
-                    borderColor: '#2196f3',
-                    backgroundColor: 'rgba(33, 150, 243, 0.1)',
-                    borderWidth: 3,
-                    fill: true
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    title: {
-                        display: true,
-                        text: currentLang === 'ar' ? 'ارتفاع السد مقابل القطر (نطاق FAO: 30-50 سم)' : 'Bund Height vs Diameter (FAO Range: 30-50cm)',
-                        font: { size: 16, weight: 'bold' }
-                    }
-                },
-                scales: {
-                    x: {
-                        title: {
-                            display: true,
-                            text: currentLang === 'ar' ? 'القطر (م)' : 'Diameter (m)'
-                        }
-                    },
-                    y: {
-                        title: {
-                            display: true,
-                            text: currentLang === 'ar' ? 'الارتفاع (سم)' : 'Height (cm)'
+                            text: currentLang === 'ar' ? 'ارتفاع السد (سم)' : 'Bund Height (cm)',
+                            font: {
+                                size: 14,
+                                weight: 'bold'
+                            }
                         },
                         min: 25,
                         max: 55
                     }
-                }
-            }
-        });
-    }
-    
-    // مخطط 3: نسب التجميع
-    const ratioCtx = document.getElementById('ratio-chart');
-    if (ratioCtx) {
-        const P = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000];
-        const slopes = [0, 5, 10];
-        const datasets = slopes.map((S, i) => {
-            const colors = ['#4caf50', '#2196f3', '#ff9800'];
-            return {
-                label: `${currentLang === 'ar' ? 'ميل' : 'Slope'} ${S}%`,
-                data: P.map(p => {
-                    let baseC_A;
-                    if (p <= 200) {
-                        baseC_A = 3.0 + (0.3 * 1);
-                    } else if (p <= 400) {
-                        baseC_A = 2.2 + (0.25 * 1);
-                    } else if (p <= 600) {
-                        baseC_A = 1.6 + (0.2 * 1);
-                    } else {
-                        baseC_A = 1.2 + (0.15 * 1);
-                    }
-                    const C_A = baseC_A * (1 + (S * 0.02));
-                    return Math.max(1.0, Math.min(4.0, C_A));
-                }),
-                borderColor: colors[i],
-                backgroundColor: colors[i] + '20',
-                borderWidth: 2,
-                tension: 0.4
-            };
-        });
-        
-        new Chart(ratioCtx, {
-            type: 'line',
-            data: {
-                labels: P,
-                datasets: datasets
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
+                },
                 plugins: {
                     title: {
                         display: true,
-                        text: currentLang === 'ar' ? 'نسبة التجميع مقابل الأمطار' : 'Catchment Ratio vs Rainfall',
-                        font: { size: 16, weight: 'bold' }
-                    }
-                },
-                scales: {
-                    x: {
-                        title: {
-                            display: true,
-                            text: currentLang === 'ar' ? 'معدل الأمطار (مم/سنة)' : 'Rainfall (mm/year)'
+                        text: currentLang === 'ar' ? 'الارتفاع مقابل القطر' : 'Height vs Diameter',
+                        font: {
+                            size: 16,
+                            weight: 'bold'
                         }
-                    },
-                    y: {
-                        title: {
-                            display: true,
-                            text: currentLang === 'ar' ? 'نسبة التجميع (C:A)' : 'Catchment Ratio (C:A)'
-                        },
-                        min: 0,
-                        max: 5
                     }
                 }
             }
@@ -1140,71 +1042,32 @@ function createDocumentationCharts() {
     }
 }
 
-// تهيئة التوثيق
-function initDocumentation() {
-    createDocumentationCharts();
-}
-
-// تهيئة التطبيق عند تحميل الصفحة
+// تهيئة الصفحة عند التحميل
 document.addEventListener('DOMContentLoaded', function() {
     console.log('DOM loaded, initializing...');
+    
+    // تهيئة اللغة
+    updateLanguage();
+    updateDirection();
     
     // تهيئة القائمة المتنقلة
     initNavigation();
     
-    // تهيئة الآلة الحاسبة
-    initCalculator();
-    
-    // تهيئة التوثيق
-    if (window.location.pathname.includes('docs.html')) {
-        initDocumentation();
+    // تهيئة الآلة الحاسبة إذا كانت الصفحة الحالية تحتوي عليها
+    if (document.getElementById('calculator-form')) {
+        initCalculator();
     }
     
-    // إعداد مستمعي الأحداث
-    const languageToggle = document.getElementById('language-toggle');
-    if (languageToggle) {
-        languageToggle.addEventListener('click', toggleLanguage);
-        console.log('Language toggle button found and event listener added');
-    } else {
-        console.log('Language toggle button not found');
+    // تهيئة الرسوم البيانية للتوثيق
+    if (document.getElementById('validation-chart') || document.getElementById('docs-design-chart')) {
+        initDocsCharts();
     }
     
-    // تحديث اللغة والاتجاه الأولي
-    updateLanguage();
-    updateDirection();
+    // إضافة مستمع لزر تغيير اللغة
+    const langToggle = document.getElementById('lang-toggle');
+    if (langToggle) {
+        langToggle.addEventListener('click', toggleLanguage);
+    }
     
-    // إضافة تأثيرات scroll للتنقل
-    window.addEventListener('scroll', function() {
-        const navbar = document.querySelector('.navbar');
-        if (navbar && window.scrollY > 100) {
-            navbar.style.background = 'rgba(255, 255, 255, 0.95)';
-            navbar.style.backdropFilter = 'blur(10px)';
-        } else if (navbar) {
-            navbar.style.background = 'var(--surface-color)';
-            navbar.style.backdropFilter = 'none';
-        }
-    });
-    
-    // إضافة تأثيرات للبطاقات
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-    
-    const observer = new IntersectionObserver(function(entries) {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-            }
-        });
-    }, observerOptions);
-    
-    // مراقبة العناصر لإضافة تأثيرات الظهور
-    document.querySelectorAll('.feature-card, .step, .stat').forEach(el => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(20px)';
-        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        observer.observe(el);
-    });
+    console.log('Initialization complete');
 });
