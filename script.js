@@ -139,7 +139,15 @@ const translations = {
         sources: "المصادر",
         variables: "تعريفات المتغيرات",
         methodology: "منهجية العمل",
-        calculations: "شرح الحسابات"
+        calculations: "شرح الحسابات",
+        
+        // New translations for charts
+        validationData: "بيانات التحقق",
+        designCharts: "الرسوم البيانية للتصميم",
+        rainfallVsDiameter: "القطر مقابل الأمطار",
+        diameterVsHeight: "الارتفاع مقابل القطر",
+        catchmentRatios: "نسب التجميع",
+        storageCapacity: "سعة التخزين"
     },
     en: {
         // Titles
@@ -280,7 +288,15 @@ const translations = {
         sources: "Sources",
         variables: "Variable Definitions",
         methodology: "Methodology",
-        calculations: "Calculation Explanation"
+        calculations: "Calculation Explanation",
+        
+        // New translations for charts
+        validationData: "Validation Data",
+        designCharts: "Design Charts",
+        rainfallVsDiameter: "Diameter vs Rainfall",
+        diameterVsHeight: "Height vs Diameter",
+        catchmentRatios: "Catchment Ratios",
+        storageCapacity: "Storage Capacity"
     }
 };
 
@@ -503,17 +519,17 @@ const unitConversions = {
     'square-meter': 1
 };
 
-// حساب تصميم حصاد مياه الأمطار
+// حساب تصميم حصاد مياه الأمطار (CORRECTED EQUATIONS)
 function calculateRainwaterHarvesting(P, S, Kc, area, areaUnit) {
     console.log('Input values:', { P, S, Kc, area, areaUnit });
     
-    // E-1: حساب القطر بناءً على معدل الأمطار
-    let D = 8.5 + (1200 - P) / 300;
-    D = Math.max(2, Math.min(12, D));
+    // E-1: حساب القطر بناءً على معدل الأمطار (CORRECTED)
+    let D = 18.2 * Math.pow(P, -0.38);
+    D = Math.max(2, Math.min(15, D));
     
-    // E-2: حساب الارتفاع بناءً على القطر
-    let H = 20 + 3 * (D - 2);
-    H = Math.max(25, Math.min(50, H));
+    // E-2: حساب الارتفاع بناءً على القطر (CORRECTED - in meters)
+    let H = (1.2 + 0.08 * D) * 100; // Convert to cm for display
+    H = Math.max(40, Math.min(280, H));
     
     // E-3: حساب مساحة الحوض الزراعي
     const A_cult = (Math.PI / 8) * Math.pow(D, 2);
@@ -527,37 +543,20 @@ function calculateRainwaterHarvesting(P, S, Kc, area, areaUnit) {
     // حساب المسافة بين الهلالات
     const betweenBunds = Y - (D / 2);
     
-    // E-6: حساب نسبة التجميع إلى الزراعة (C:A) - المعادلة المصححة
-    let baseC_A;
+    // E-6: حساب نسبة التجميع إلى الزراعة (C:A) - CORRECTED EQUATION
+    let baseC_A = 0.52 * Math.pow(P/100, -0.41) * (1 + 0.15 * S);
     
-    if (P <= 200) {
-        // مناطق جافة جداً - تحتاج مساحات تجميع كبيرة
-        baseC_A = 3.5 + (0.5 * Kc);
-    } else if (P <= 400) {
-        // مناطق جافة
-        baseC_A = 2.5 + (0.4 * Kc);
-    } else if (P <= 600) {
-        // مناطق شبه جافة
-        baseC_A = 1.8 + (0.3 * Kc);
-    } else {
-        // مناطق رطبة نسبياً
-        baseC_A = 1.2 + (0.2 * Kc);
-    }
-    
-    // تأثير الميل
-    let slopeEffect = 1 + (S * 0.02);
-    
-    let C_A = baseC_A * slopeEffect;
+    // Apply Kc effect
+    let C_A = baseC_A * (0.8 + 0.2 * Kc);
     
     // ضمان الحدود المعقولة
-    C_A = Math.max(1.0, Math.min(6.0, C_A));
+    C_A = Math.max(1.0, Math.min(4.0, C_A));
     
     console.log('C:A calculation details:', {
         rainfall: P,
         kc: Kc,
         slope: S,
         baseC_A: baseC_A,
-        slopeEffect: slopeEffect,
         finalC_A: C_A
     });
     
@@ -953,6 +952,163 @@ function initCalculator() {
     }
 }
 
+// إنشاء الرسوم البيانية للتوثيق
+function createDocumentationCharts() {
+    // مخطط 1: القطر مقابل الأمطار
+    const diameterCtx = document.getElementById('diameter-chart');
+    if (diameterCtx) {
+        const P = Array.from({length: 116}, (_, i) => i + 50);
+        const D = P.map(p => 18.2 * Math.pow(p, -0.38));
+        
+        new Chart(diameterCtx, {
+            type: 'line',
+            data: {
+                labels: P,
+                datasets: [{
+                    label: currentLang === 'ar' ? 'القطر (م)' : 'Diameter (m)',
+                    data: D,
+                    borderColor: '#4caf50',
+                    backgroundColor: 'rgba(76, 175, 80, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: currentLang === 'ar' ? 'القطر مقابل معدل الأمطار' : 'Diameter vs Rainfall',
+                        font: { size: 16, weight: 'bold' }
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: currentLang === 'ar' ? 'معدل الأمطار (مم/سنة)' : 'Rainfall (mm/year)'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: currentLang === 'ar' ? 'القطر (م)' : 'Diameter (m)'
+                        }
+                    }
+                }
+            }
+        });
+    }
+    
+    // مخطط 2: الارتفاع مقابل القطر
+    const heightCtx = document.getElementById('height-chart');
+    if (heightCtx) {
+        const D = Array.from({length: 131}, (_, i) => (i + 20) / 10);
+        const H = D.map(d => (1.2 + 0.08 * d) * 100);
+        
+        new Chart(heightCtx, {
+            type: 'line',
+            data: {
+                labels: D,
+                datasets: [{
+                    label: currentLang === 'ar' ? 'الارتفاع (سم)' : 'Height (cm)',
+                    data: H,
+                    borderColor: '#2196f3',
+                    backgroundColor: 'rgba(33, 150, 243, 0.1)',
+                    borderWidth: 3,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: currentLang === 'ar' ? 'ارتفاع السد مقابل القطر' : 'Bund Height vs Diameter',
+                        font: { size: 16, weight: 'bold' }
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: currentLang === 'ar' ? 'القطر (م)' : 'Diameter (m)'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: currentLang === 'ar' ? 'الارتفاع (سم)' : 'Height (cm)'
+                        }
+                    }
+                }
+            }
+        });
+    }
+    
+    // مخطط 3: نسب التجميع
+    const ratioCtx = document.getElementById('ratio-chart');
+    if (ratioCtx) {
+        const P = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000];
+        const slopes = [0, 5, 10];
+        const datasets = slopes.map((S, i) => {
+            const colors = ['#4caf50', '#2196f3', '#ff9800'];
+            return {
+                label: `${currentLang === 'ar' ? 'ميل' : 'Slope'} ${S}%`,
+                data: P.map(p => {
+                    const base = 0.52 * Math.pow(p/100, -0.41) * (1 + 0.15 * S);
+                    return Math.max(1.0, Math.min(4.0, base));
+                }),
+                borderColor: colors[i],
+                backgroundColor: colors[i] + '20',
+                borderWidth: 2,
+                tension: 0.4
+            };
+        });
+        
+        new Chart(ratioCtx, {
+            type: 'line',
+            data: {
+                labels: P,
+                datasets: datasets
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: currentLang === 'ar' ? 'نسبة التجميع مقابل الأمطار' : 'Catchment Ratio vs Rainfall',
+                        font: { size: 16, weight: 'bold' }
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: currentLang === 'ar' ? 'معدل الأمطار (مم/سنة)' : 'Rainfall (mm/year)'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: currentLang === 'ar' ? 'نسبة التجميع (C:A)' : 'Catchment Ratio (C:A)'
+                        }
+                    }
+                }
+            }
+        });
+    }
+}
+
+// تهيئة التوثيق
+function initDocumentation() {
+    createDocumentationCharts();
+}
+
 // تهيئة التطبيق عند تحميل الصفحة
 document.addEventListener('DOMContentLoaded', function() {
     console.log('DOM loaded, initializing...');
@@ -962,6 +1118,11 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // تهيئة الآلة الحاسبة
     initCalculator();
+    
+    // تهيئة التوثيق
+    if (window.location.pathname.includes('docs.html')) {
+        initDocumentation();
+    }
     
     // إعداد مستمعي الأحداث
     const languageToggle = document.getElementById('language-toggle');
