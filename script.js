@@ -519,17 +519,17 @@ const unitConversions = {
     'square-meter': 1
 };
 
-// حساب تصميم حصاد مياه الأمطار (CORRECTED EQUATIONS)
+// حساب تصميم حصاد مياه الأمطار (CORRECTED EQUATIONS - FAO Standards)
 function calculateRainwaterHarvesting(P, S, Kc, area, areaUnit) {
     console.log('Input values:', { P, S, Kc, area, areaUnit });
     
-    // E-1: حساب القطر بناءً على معدل الأمطار (CORRECTED)
-    let D = 18.2 * Math.pow(P, -0.38);
-    D = Math.max(2, Math.min(15, D));
+    // E-1: حساب القطر بناءً على معدل الأمطار (FAO Standard: 2-12m)
+    let D = 14.5 * Math.pow(P, -0.31);
+    D = Math.max(2, Math.min(12, D));
     
-    // E-2: حساب الارتفاع بناءً على القطر (CORRECTED - in meters)
-    let H = (1.2 + 0.08 * D) * 100; // Convert to cm for display
-    H = Math.max(40, Math.min(280, H));
+    // E-2: حساب الارتفاع بناءً على القطر (FAO Standard: 30-50cm)
+    let H = 30 + 2.5 * (D - 2);
+    H = Math.max(30, Math.min(50, H));
     
     // E-3: حساب مساحة الحوض الزراعي
     const A_cult = (Math.PI / 8) * Math.pow(D, 2);
@@ -543,13 +543,26 @@ function calculateRainwaterHarvesting(P, S, Kc, area, areaUnit) {
     // حساب المسافة بين الهلالات
     const betweenBunds = Y - (D / 2);
     
-    // E-6: حساب نسبة التجميع إلى الزراعة (C:A) - CORRECTED EQUATION
-    let baseC_A = 0.52 * Math.pow(P/100, -0.41) * (1 + 0.15 * S);
+    // E-6: حساب نسبة التجميع إلى الزراعة (C:A) - FAO Standard
+    let baseC_A;
     
-    // Apply Kc effect
-    let C_A = baseC_A * (0.8 + 0.2 * Kc);
+    // FAO-based calculation for different rainfall zones
+    if (P <= 200) {
+        baseC_A = 3.0 + (0.3 * Kc);
+    } else if (P <= 400) {
+        baseC_A = 2.2 + (0.25 * Kc);
+    } else if (P <= 600) {
+        baseC_A = 1.6 + (0.2 * Kc);
+    } else {
+        baseC_A = 1.2 + (0.15 * Kc);
+    }
     
-    // ضمان الحدود المعقولة
+    // Slope effect (FAO adjustment)
+    let slopeEffect = 1 + (S * 0.02);
+    
+    let C_A = baseC_A * slopeEffect;
+    
+    // ضمان الحدود المعقولة (FAO range)
     C_A = Math.max(1.0, Math.min(4.0, C_A));
     
     console.log('C:A calculation details:', {
@@ -557,6 +570,7 @@ function calculateRainwaterHarvesting(P, S, Kc, area, areaUnit) {
         kc: Kc,
         slope: S,
         baseC_A: baseC_A,
+        slopeEffect: slopeEffect,
         finalC_A: C_A
     });
     
@@ -954,11 +968,14 @@ function initCalculator() {
 
 // إنشاء الرسوم البيانية للتوثيق
 function createDocumentationCharts() {
-    // مخطط 1: القطر مقابل الأمطار
+    // مخطط 1: القطر مقابل الأمطار (FAO Range: 2-12m)
     const diameterCtx = document.getElementById('diameter-chart');
     if (diameterCtx) {
         const P = Array.from({length: 116}, (_, i) => i + 50);
-        const D = P.map(p => 18.2 * Math.pow(p, -0.38));
+        const D = P.map(p => {
+            let d = 14.5 * Math.pow(p, -0.31);
+            return Math.max(2, Math.min(12, d));
+        });
         
         new Chart(diameterCtx, {
             type: 'line',
@@ -980,7 +997,7 @@ function createDocumentationCharts() {
                 plugins: {
                     title: {
                         display: true,
-                        text: currentLang === 'ar' ? 'القطر مقابل معدل الأمطار' : 'Diameter vs Rainfall',
+                        text: currentLang === 'ar' ? 'القطر مقابل معدل الأمطار (نطاق FAO: 2-12 م)' : 'Diameter vs Rainfall (FAO Range: 2-12m)',
                         font: { size: 16, weight: 'bold' }
                     }
                 },
@@ -995,23 +1012,28 @@ function createDocumentationCharts() {
                         title: {
                             display: true,
                             text: currentLang === 'ar' ? 'القطر (م)' : 'Diameter (m)'
-                        }
+                        },
+                        min: 0,
+                        max: 15
                     }
                 }
             }
         });
     }
     
-    // مخطط 2: الارتفاع مقابل القطر
+    // مخطط 2: الارتفاع مقابل القطر (FAO Range: 30-50cm)
     const heightCtx = document.getElementById('height-chart');
     if (heightCtx) {
-        const D = Array.from({length: 131}, (_, i) => (i + 20) / 10);
-        const H = D.map(d => (1.2 + 0.08 * d) * 100);
+        const D = Array.from({length: 101}, (_, i) => 2 + (i / 10));
+        const H = D.map(d => {
+            let h = 30 + 2.5 * (d - 2);
+            return Math.max(30, Math.min(50, h));
+        });
         
         new Chart(heightCtx, {
             type: 'line',
             data: {
-                labels: D,
+                labels: D.map(d => d.toFixed(1)),
                 datasets: [{
                     label: currentLang === 'ar' ? 'الارتفاع (سم)' : 'Height (cm)',
                     data: H,
@@ -1027,7 +1049,7 @@ function createDocumentationCharts() {
                 plugins: {
                     title: {
                         display: true,
-                        text: currentLang === 'ar' ? 'ارتفاع السد مقابل القطر' : 'Bund Height vs Diameter',
+                        text: currentLang === 'ar' ? 'ارتفاع السد مقابل القطر (نطاق FAO: 30-50 سم)' : 'Bund Height vs Diameter (FAO Range: 30-50cm)',
                         font: { size: 16, weight: 'bold' }
                     }
                 },
@@ -1042,7 +1064,9 @@ function createDocumentationCharts() {
                         title: {
                             display: true,
                             text: currentLang === 'ar' ? 'الارتفاع (سم)' : 'Height (cm)'
-                        }
+                        },
+                        min: 25,
+                        max: 55
                     }
                 }
             }
@@ -1059,8 +1083,18 @@ function createDocumentationCharts() {
             return {
                 label: `${currentLang === 'ar' ? 'ميل' : 'Slope'} ${S}%`,
                 data: P.map(p => {
-                    const base = 0.52 * Math.pow(p/100, -0.41) * (1 + 0.15 * S);
-                    return Math.max(1.0, Math.min(4.0, base));
+                    let baseC_A;
+                    if (p <= 200) {
+                        baseC_A = 3.0 + (0.3 * 1);
+                    } else if (p <= 400) {
+                        baseC_A = 2.2 + (0.25 * 1);
+                    } else if (p <= 600) {
+                        baseC_A = 1.6 + (0.2 * 1);
+                    } else {
+                        baseC_A = 1.2 + (0.15 * 1);
+                    }
+                    const C_A = baseC_A * (1 + (S * 0.02));
+                    return Math.max(1.0, Math.min(4.0, C_A));
                 }),
                 borderColor: colors[i],
                 backgroundColor: colors[i] + '20',
@@ -1096,7 +1130,9 @@ function createDocumentationCharts() {
                         title: {
                             display: true,
                             text: currentLang === 'ar' ? 'نسبة التجميع (C:A)' : 'Catchment Ratio (C:A)'
-                        }
+                        },
+                        min: 0,
+                        max: 5
                     }
                 }
             }
