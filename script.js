@@ -852,14 +852,14 @@ function initCalculator() {
             console.log('Form values:', { rainfall, slope, cropValue, kc, area, areaUnit });
             
             // التحقق من صحة البيانات
-            if (rainfall < 50 || rainfall > 1200) {
+            if (isNaN(rainfall) || rainfall < 50 || rainfall > 1200) {
                 alert(currentLang === 'ar' ? 
                     'معدل هطول الأمطار يجب أن يكون بين 50 و 1200 مم/سنة' :
                     'Rainfall rate must be between 50 and 1200 mm/year');
                 return;
             }
             
-            if (slope < 0 || slope > 25) {
+            if (isNaN(slope) || slope < 0 || slope > 25) {
                 alert(currentLang === 'ar' ?
                     'ميل الأرض يجب أن يكون بين 0 و 25%' :
                     'Land slope must be between 0 and 25%');
@@ -1286,3 +1286,4 @@ document.addEventListener('DOMContentLoaded', function() {
         observer.observe(el);
     });
 });
+
