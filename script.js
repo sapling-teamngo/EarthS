@@ -812,20 +812,6 @@ function initCalculator() {
                 } else {
                     if (customKcGroup) customKcGroup.style.display = 'none';
                 }
-                
-                // إعادة الحساب فوراً عند تغيير المحصول
-                if (this.value !== '' && this.value !== 'custom') {
-                    const rainfall = parseFloat(document.getElementById('rainfall').value);
-                    const slope = parseFloat(document.getElementById('slope').value);
-                    const area = parseFloat(document.getElementById('area').value) || 1;
-                    const areaUnit = document.getElementById('area-unit').value;
-                    
-                    if (rainfall && slope) {
-                        const kc = parseFloat(this.value);
-                        const results = calculateRainwaterHarvesting(rainfall, slope, kc, area, areaUnit);
-                        displayResults(results);
-                    }
-                }
             });
         }
         
@@ -894,76 +880,16 @@ function initCalculator() {
             });
         }
         
-        // إضافة event listener لحقل Kc المخصص لتحديث الحسابات مباشرة
-        if (customKcInput) {
-            customKcInput.addEventListener('input', function() {
-                // إذا كان النموذج يحتوي على بيانات صالحة، قم بإعادة الحساب
-                const rainfall = parseFloat(document.getElementById('rainfall').value);
-                const slope = parseFloat(document.getElementById('slope').value);
-                const area = parseFloat(document.getElementById('area').value) || 1;
-                const areaUnit = document.getElementById('area-unit').value;
-                
-                if (rainfall && slope && this.value) {
-                    const kc = parseFloat(this.value) || 1;
-                    if (kc >= 0.1 && kc <= 1.5) {
-                        const results = calculateRainwaterHarvesting(rainfall, slope, kc, area, areaUnit);
-                        displayResults(results);
-                    }
+        // إضافة event listener للزر Enter في الحقول
+        const inputs = calculatorForm.querySelectorAll('input, select');
+        inputs.forEach(input => {
+            input.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    calculatorForm.dispatchEvent(new Event('submit'));
                 }
             });
-        }
-        
-        // إضافة event listeners للحقول الأخرى لتحديث النتائج فوراً
-        const rainfallInput = document.getElementById('rainfall');
-        const slopeInput = document.getElementById('slope');
-        
-        if (rainfallInput) {
-            rainfallInput.addEventListener('input', function() {
-                if (this.value && document.getElementById('slope').value) {
-                    const rainfall = parseFloat(this.value);
-                    const slope = parseFloat(document.getElementById('slope').value);
-                    const cropValue = cropSelect ? cropSelect.value : '';
-                    const area = parseFloat(document.getElementById('area').value) || 1;
-                    const areaUnit = document.getElementById('area-unit').value;
-                    
-                    let kc = 1;
-                    if (cropValue === 'custom') {
-                        kc = parseFloat(customKcInput ? customKcInput.value : 1) || 1;
-                    } else if (cropValue) {
-                        kc = parseFloat(cropValue);
-                    }
-                    
-                    if (rainfall >= 50 && rainfall <= 1200 && slope >= 0 && slope <= 25) {
-                        const results = calculateRainwaterHarvesting(rainfall, slope, kc, area, areaUnit);
-                        displayResults(results);
-                    }
-                }
-            });
-        }
-        
-        if (slopeInput) {
-            slopeInput.addEventListener('input', function() {
-                if (this.value && document.getElementById('rainfall').value) {
-                    const slope = parseFloat(this.value);
-                    const rainfall = parseFloat(document.getElementById('rainfall').value);
-                    const cropValue = cropSelect ? cropSelect.value : '';
-                    const area = parseFloat(document.getElementById('area').value) || 1;
-                    const areaUnit = document.getElementById('area-unit').value;
-                    
-                    let kc = 1;
-                    if (cropValue === 'custom') {
-                        kc = parseFloat(customKcInput ? customKcInput.value : 1) || 1;
-                    } else if (cropValue) {
-                        kc = parseFloat(cropValue);
-                    }
-                    
-                    if (rainfall >= 50 && rainfall <= 1200 && slope >= 0 && slope <= 25) {
-                        const results = calculateRainwaterHarvesting(rainfall, slope, kc, area, areaUnit);
-                        displayResults(results);
-                    }
-                }
-            });
-        }
+        });
     }
 }
 
