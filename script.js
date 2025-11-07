@@ -641,10 +641,10 @@ function displayResults(results) {
     // إظهار لوحة النتائج
     document.getElementById('results-panel').style.display = 'block';
     
-    // التمرير إلى النتائج على سطح المكتب فقط
-    if (window.innerWidth > 768) {
+    // التمرير إلى النتائج على الهواتف
+    if (window.innerWidth <= 768) {
         setTimeout(() => {
-            document.getElementById('input-panel').scrollIntoView({ 
+            document.getElementById('results-panel').scrollIntoView({ 
                 behavior: 'smooth',
                 block: 'start'
             });
@@ -814,20 +814,17 @@ function initCalculator() {
                 }
                 
                 // إعادة الحساب فوراً عند تغيير المحصول
-                const rainfall = parseFloat(document.getElementById('rainfall').value);
-                const slope = parseFloat(document.getElementById('slope').value);
-                const area = parseFloat(document.getElementById('area').value) || 1;
-                const areaUnit = document.getElementById('area-unit').value;
-
-                if (rainfall && slope && !isNaN(rainfall) && !isNaN(slope)) {
-                    let kc = 1;
-                    if (this.value === 'custom') {
-                        kc = parseFloat(customKcInput ? customKcInput.value : 1) || 1;
-                    } else if (this.value) {
-                        kc = parseFloat(this.value);
+                if (this.value !== '' && this.value !== 'custom') {
+                    const rainfall = parseFloat(document.getElementById('rainfall').value);
+                    const slope = parseFloat(document.getElementById('slope').value);
+                    const area = parseFloat(document.getElementById('area').value) || 1;
+                    const areaUnit = document.getElementById('area-unit').value;
+                    
+                    if (rainfall && slope) {
+                        const kc = parseFloat(this.value);
+                        const results = calculateRainwaterHarvesting(rainfall, slope, kc, area, areaUnit);
+                        displayResults(results);
                     }
-                    const results = calculateRainwaterHarvesting(rainfall, slope, kc, area, areaUnit);
-                    displayResults(results);
                 }
             });
         }
@@ -855,14 +852,14 @@ function initCalculator() {
             console.log('Form values:', { rainfall, slope, cropValue, kc, area, areaUnit });
             
             // التحقق من صحة البيانات
-            if (isNaN(rainfall) || rainfall < 50 || rainfall > 1200) {
+            if (rainfall < 50 || rainfall > 1200) {
                 alert(currentLang === 'ar' ? 
                     'معدل هطول الأمطار يجب أن يكون بين 50 و 1200 مم/سنة' :
                     'Rainfall rate must be between 50 and 1200 mm/year');
                 return;
             }
             
-            if (isNaN(slope) || slope < 0 || slope > 25) {
+            if (slope < 0 || slope > 25) {
                 alert(currentLang === 'ar' ?
                     'ميل الأرض يجب أن يكون بين 0 و 25%' :
                     'Land slope must be between 0 and 25%');
@@ -906,7 +903,7 @@ function initCalculator() {
                 const area = parseFloat(document.getElementById('area').value) || 1;
                 const areaUnit = document.getElementById('area-unit').value;
                 
-                if (rainfall && slope && !isNaN(rainfall) && !isNaN(slope) && this.value) {
+                if (rainfall && slope && this.value) {
                     const kc = parseFloat(this.value) || 1;
                     if (kc >= 0.1 && kc <= 1.5) {
                         const results = calculateRainwaterHarvesting(rainfall, slope, kc, area, areaUnit);
@@ -964,52 +961,6 @@ function initCalculator() {
                         const results = calculateRainwaterHarvesting(rainfall, slope, kc, area, areaUnit);
                         displayResults(results);
                     }
-                }
-            });
-        }
-
-        // إضافة event listeners للمساحة ووحدة القياس
-        const areaInput = document.getElementById('area');
-        const areaUnitSelect = document.getElementById('area-unit');
-
-        if (areaInput) {
-            areaInput.addEventListener('input', function() {
-                const rainfall = parseFloat(document.getElementById('rainfall').value);
-                const slope = parseFloat(document.getElementById('slope').value);
-                const cropValue = cropSelect ? cropSelect.value : '';
-                
-                if (rainfall && slope && !isNaN(rainfall) && !isNaN(slope)) {
-                    let kc = 1;
-                    if (cropValue === 'custom') {
-                        kc = parseFloat(customKcInput ? customKcInput.value : 1) || 1;
-                    } else if (cropValue) {
-                        kc = parseFloat(cropValue);
-                    }
-                    const area = parseFloat(this.value) || 1;
-                    const areaUnit = document.getElementById('area-unit').value;
-                    const results = calculateRainwaterHarvesting(rainfall, slope, kc, area, areaUnit);
-                    displayResults(results);
-                }
-            });
-        }
-
-        if (areaUnitSelect) {
-            areaUnitSelect.addEventListener('change', function() {
-                const rainfall = parseFloat(document.getElementById('rainfall').value);
-                const slope = parseFloat(document.getElementById('slope').value);
-                const cropValue = cropSelect ? cropSelect.value : '';
-                
-                if (rainfall && slope && !isNaN(rainfall) && !isNaN(slope)) {
-                    let kc = 1;
-                    if (cropValue === 'custom') {
-                        kc = parseFloat(customKcInput ? customKcInput.value : 1) || 1;
-                    } else if (cropValue) {
-                        kc = parseFloat(cropValue);
-                    }
-                    const area = parseFloat(document.getElementById('area').value) || 1;
-                    const areaUnit = this.value;
-                    const results = calculateRainwaterHarvesting(rainfall, slope, kc, area, areaUnit);
-                    displayResults(results);
                 }
             });
         }
