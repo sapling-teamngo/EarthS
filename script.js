@@ -520,8 +520,8 @@ const unitConversions = {
 };
 
 // حساب تصميم حصاد مياه الأمطار (CORRECTED EQUATIONS - FAO Standards)
-function calculateRainwaterHarvesting(P, S, Kc, area, areaUnit) {
-    console.log('Input values:', { P, S, Kc, area, areaUnit });
+function calculateRainwaterHarvesting(P, S, Kc, area, areaUnit, soilType) {
+    console.log('Input values:', { P, S, Kc, area, areaUnit, soilType });
     
     // E-1: حساب القطر بناءً على معدل الأمطار (FAO Standard: 2-12m)
     // Linear interpolation between 2m at 50mm and 12m at 1200mm
@@ -561,7 +561,17 @@ function calculateRainwaterHarvesting(P, S, Kc, area, areaUnit) {
     // Slope effect (FAO adjustment)
     let slopeEffect = 1 + (S * 0.02);
     
-    let C_A = baseC_A * slopeEffect;
+    // Soil type effect
+    let soilEffect = 1;
+    if (soilType === 'sandy') {
+        soilEffect = 1.1; // Sandy soil needs more catchment area
+    } else if (soilType === 'loamy') {
+        soilEffect = 1.0; // Loamy soil is standard
+    } else if (soilType === 'clay') {
+        soilEffect = 0.9; // Clay soil needs less catchment area
+    }
+    
+    let C_A = baseC_A * slopeEffect * soilEffect;
     
     // ضمان الحدود المعقولة (FAO range)
     C_A = Math.max(1.0, Math.min(4.0, C_A));
@@ -570,8 +580,10 @@ function calculateRainwaterHarvesting(P, S, Kc, area, areaUnit) {
         rainfall: P,
         kc: Kc,
         slope: S,
+        soilType: soilType,
         baseC_A: baseC_A,
         slopeEffect: slopeEffect,
+        soilEffect: soilEffect,
         finalC_A: C_A
     });
     
@@ -598,7 +610,9 @@ function calculateRainwaterHarvesting(P, S, Kc, area, areaUnit) {
         caRatio: C_A,
         pitsPerHectare: Math.round(N_total_per_hectare),
         totalPits: total_pits,
-        areaSqM: areaSqM
+        areaSqM: areaSqM,
+        kcUsed: Kc,
+        soilType: soilType
     };
 }
 
@@ -825,6 +839,7 @@ function initCalculator() {
             const cropValue = cropSelect ? cropSelect.value : '';
             const area = parseFloat(document.getElementById('area').value) || 1;
             const areaUnit = document.getElementById('area-unit').value;
+            const soilType = document.getElementById('soil-type').value;
             
             // تحديد قيمة Kc (افتراضي 1 إذا لم يتم الاختيار)
             let kc = 1; // القيمة الافتراضية
@@ -835,17 +850,17 @@ function initCalculator() {
                 kc = parseFloat(cropValue);
             }
             
-            console.log('Form values:', { rainfall, slope, cropValue, kc, area, areaUnit });
+            console.log('Form values:', { rainfall, slope, cropValue, kc, area, areaUnit, soilType });
             
             // التحقق من صحة البيانات
-            if (rainfall < 50 || rainfall > 1200) {
+            if (!rainfall || rainfall < 50 || rainfall > 1200) {
                 alert(currentLang === 'ar' ? 
                     'معدل هطول الأمطار يجب أن يكون بين 50 و 1200 مم/سنة' :
                     'Rainfall rate must be between 50 and 1200 mm/year');
                 return;
             }
             
-            if (slope < 0 || slope > 25) {
+            if (!slope || slope < 0 || slope > 25) {
                 alert(currentLang === 'ar' ?
                     'ميل الأرض يجب أن يكون بين 0 و 25%' :
                     'Land slope must be between 0 and 25%');
@@ -859,8 +874,15 @@ function initCalculator() {
                 return;
             }
             
+            if (!area || area <= 0) {
+                alert(currentLang === 'ar' ?
+                    'مساحة الأرض يجب أن تكون أكبر من صفر' :
+                    'Land area must be greater than zero');
+                return;
+            }
+            
             // حساب النتائج
-            const results = calculateRainwaterHarvesting(rainfall, slope, kc, area, areaUnit);
+            const results = calculateRainwaterHarvesting(rainfall, slope, kc, area, areaUnit, soilType);
             
             // عرض النتائج
             displayResults(results);
